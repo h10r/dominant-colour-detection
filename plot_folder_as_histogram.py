@@ -7,21 +7,42 @@ import re
 import numpy as np
 import mahotas as mh
 
-import matplotlib.mlab as mlab
-import matplotlib.pyplot as plt
+from matplotlib import pylab as plt
+
+BINS = 16
 
 # @TODO: Make sure the graph is cleared after each folder
 
-def read_and_generate_histogram( a_file ):
+def read_file_and_return_histogram( a_file ):
 	img = mh.imread( a_file )
-	hist, bin_edges = np.histogram( img, bins=12 )
+	
+	return np.histogram( img, bins=BINS, normed=True )
 
-	return hist, bin_edges
+def draw_histogram( histograms_in_folder, label ):
+	print(label)
 
-def draw_histogram( x, label, DEBUG=False ):
+	for histogram in histograms_in_folder:
+		bins, edges = histogram
+		left,right = edges[:-1],edges[1:]
+
+		X = np.array([left,right]).T.flatten()
+		Y = np.array([bins,bins]).T.flatten()
+
+		plt.plot(X,Y)
+		plt.show()
+
+def draw_histogram_inception( x, label, DEBUG=False ):
 	# the histogram of the data with histtype='step'
-	n, bins, patches = plt.hist(x, 50, normed=True, histtype='step')
-	plt.setp(patches, 'facecolor', 'g', 'alpha', 0.75)
+
+	n, bins, patches = plt.hist( x, BINS, histtype='step' )
+	print("*"*20)
+	print(n)
+	print(bins)
+	print(patches)
+	print(patches[0])
+	print("*"*20)
+
+	#plt.setp( patches, 'facecolor', 'g', 'alpha', 0.75 )
 
 	# add a line showing the expected distribution
 	#y = mlab.normpdf( bins, mu, sigma)
@@ -42,7 +63,7 @@ def read_each_file_in_folder( path ):
 
 	parent_folder = os.listdir( path )
 
-	for dir_item_and_label in parent_folder:
+	for dir_item_and_label in parent_folder[0:2]:
 		full_path = path + "/" + dir_item_and_label
 
 		# for all directories in path
@@ -51,20 +72,19 @@ def read_each_file_in_folder( path ):
 
 			dirs = os.listdir( full_path )
 
-			x = []
+			histograms_in_folder = []
 
 			# for file in sub directory
 			for file_in_dir in dirs[0:5]: # @TODO remove the 6 file limit!
 				if file_in_dir.endswith(".jpg"):
 					try:
-						hist, bin_edges = read_and_generate_histogram( full_path + "/" + file_in_dir )
-						x.append( hist )
+						histograms_in_folder.append( read_file_and_return_histogram( full_path + "/" + file_in_dir ) )
 					except Exception:
 						print("plot_folder_as_histogram: ERROR reading " + full_path + "/" + file_in_dir)
 
-			print("plot_folder_as_histogram: STATS: " + dir_item_and_label + ": " + str(len(x)))
+			print("plot_folder_as_histogram: STATS: " + dir_item_and_label + ": " + str(len( histograms_in_folder )))
 
-			draw_histogram(x, dir_item_and_label)
+			draw_histogram( histograms_in_folder, dir_item_and_label )
 
 def main(folder):
 	read_each_file_in_folder(folder)
