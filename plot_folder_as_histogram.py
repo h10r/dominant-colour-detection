@@ -14,25 +14,15 @@ print
 print("plot_folder_as_histogram foldername")
 print
 
-def read_each_file_in_folder( path ):
-	print("Reading folder: " + path)
-	
-	dirs = os.listdir( path )
-	for a_file in dirs:
-		if a_file.endswith(".jpg"):
-			print(a_file)
-
-def read_and_generate_histogram( folder ):
-	img = mh.imread( folder )
-	hist, bin_edges = np.histogram( img, bins=12)
+def read_and_generate_histogram( a_file ):
+	img = mh.imread( a_file )
+	hist, bin_edges = np.histogram( img, bins=12 )
 
 	return hist, bin_edges
 
-def draw_histogram( histogram ):
-	x = histogram
-
+def draw_histogram( x ):
 	# the histogram of the data with histtype='step'
-	n, bins, patches = plt.hist(x, 50, normed=1, histtype='stepfilled')
+	n, bins, patches = plt.hist(x, 50, normed=True, histtype='step')
 	plt.setp(patches, 'facecolor', 'g', 'alpha', 0.75)
 
 	# add a line showing the expected distribution
@@ -43,10 +33,21 @@ def draw_histogram( histogram ):
 	plt.title("Histogram")
 	plt.show()
 
-def main(folder):
-	#hist, bin_edges = read_and_generate_histogram( folder )
-	#draw_histogram( hist )
+def read_each_file_in_folder( path ):
+	print("Reading folder: " + path)
+	
+	x = []
 
+	dirs = os.listdir( path )
+	for a_file in dirs[0:5]:
+		if a_file.endswith(".jpg"):
+			hist, bin_edges = read_and_generate_histogram( path + a_file )
+			x.append( hist )
+
+	draw_histogram(x)
+
+def main(folder):
+	
 	read_each_file_in_folder(folder)
 
 if __name__ == "__main__":
