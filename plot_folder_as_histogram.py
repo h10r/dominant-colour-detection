@@ -10,9 +10,7 @@ import mahotas as mh
 import matplotlib.mlab as mlab
 import matplotlib.pyplot as plt
 
-print
-print("plot_folder_as_histogram foldername")
-print
+# @TODO: Make sure the graph is cleared after each folder
 
 def read_and_generate_histogram( a_file ):
 	img = mh.imread( a_file )
@@ -42,8 +40,6 @@ def read_each_file_in_folder( path ):
 
 	label = path.split("/")[-2]
 
-	x = []
-
 	parent_folder = os.listdir( path )
 
 	for dir_item_and_label in parent_folder:
@@ -55,13 +51,18 @@ def read_each_file_in_folder( path ):
 
 			dirs = os.listdir( full_path )
 
-			for file_in_dir in dirs[0:5]:
+			x = []
+
+			# for file in sub directory
+			for file_in_dir in dirs[0:5]: # @TODO remove the 6 file limit!
 				if file_in_dir.endswith(".jpg"):
 					try:
 						hist, bin_edges = read_and_generate_histogram( full_path + "/" + file_in_dir )
 						x.append( hist )
 					except Exception:
 						print("plot_folder_as_histogram: ERROR reading " + full_path + "/" + file_in_dir)
+
+			print("plot_folder_as_histogram: STATS: " + dir_item_and_label + ": " + str(len(x)))
 
 			draw_histogram(x, dir_item_and_label)
 
