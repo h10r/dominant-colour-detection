@@ -20,7 +20,7 @@ def read_and_generate_histogram( a_file ):
 
 	return hist, bin_edges
 
-def draw_histogram( x ):
+def draw_histogram( x, label, DEBUG=False ):
 	# the histogram of the data with histtype='step'
 	n, bins, patches = plt.hist(x, 50, normed=True, histtype='step')
 	plt.setp(patches, 'facecolor', 'g', 'alpha', 0.75)
@@ -31,23 +31,41 @@ def draw_histogram( x ):
 
 	#plt.plot(range(10), range(10))
 	plt.title("Histogram")
-	plt.show()
+	
+	if DEBUG:
+		plt.show()
+
+	plt.savefig("plots/" + label + ".png")
 
 def read_each_file_in_folder( path ):
-	print("Reading folder: " + path)
-	
+	print("plot_folder_as_histogram: Reading folder: " + path)
+
+	label = path.split("/")[-2]
+
 	x = []
 
-	dirs = os.listdir( path )
-	for a_file in dirs[0:5]:
-		if a_file.endswith(".jpg"):
-			hist, bin_edges = read_and_generate_histogram( path + a_file )
-			x.append( hist )
+	parent_folder = os.listdir( path )
 
-	draw_histogram(x)
+	for dir_item_and_label in parent_folder:
+		full_path = path + "/" + dir_item_and_label
+
+		# for all directories in path
+		if os.path.isdir( full_path ):
+			# print("is path " + full_path + " - label: " + dir_item_and_label)
+
+			dirs = os.listdir( full_path )
+
+			for file_in_dir in dirs[0:5]:
+				if file_in_dir.endswith(".jpg"):
+					try:
+						hist, bin_edges = read_and_generate_histogram( full_path + "/" + file_in_dir )
+						x.append( hist )
+					except Exception:
+						print("plot_folder_as_histogram: ERROR reading " + full_path + "/" + file_in_dir)
+
+			draw_histogram(x, dir_item_and_label)
 
 def main(folder):
-	
 	read_each_file_in_folder(folder)
 
 if __name__ == "__main__":
