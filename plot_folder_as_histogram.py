@@ -21,6 +21,7 @@ def read_file_and_return_histogram( a_file ):
 def draw_histogram( histograms_in_folder, label ):
 	print(label)
 
+
 	for histogram in histograms_in_folder:
 		bins, edges = histogram
 		left,right = edges[:-1],edges[1:]
@@ -29,7 +30,14 @@ def draw_histogram( histograms_in_folder, label ):
 		Y = np.array([bins,bins]).T.flatten()
 
 		plt.plot(X,Y)
-		plt.show()
+		"""
+		plt.plot(x, y, marker='.', lw=1)
+		d = np.zeros(len(y))
+		plt.fill_between(x,y,where=y>=d, color='blue')
+		plt.fill_between(x,0,where=y<=d, color='red')
+		"""
+	
+	plt.show()
 
 def draw_histogram_inception( x, label, DEBUG=False ):
 	# the histogram of the data with histtype='step'
