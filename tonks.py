@@ -54,6 +54,8 @@ def draw_histograms(data, label):
 
 	for elem in data:
 		hist, bin_edges = np.histogram( elem, bins = range(HIST_BANDS), normed=True)
+		hist = hist.clip(0.0,0.1)
+
 		plt.bar(bin_edges[:-1], hist, width = 1, alpha = ALPHA_BANDS)
 
 		all_hist.append( hist )
@@ -72,7 +74,8 @@ def draw_histograms(data, label):
 
 def read_image_from_path( image ):
 	img = mh.imread( image )
-	return mh.imresize( img, 256 )
+	#small_img = mh.imresize( mh.imread( image ), 0.1 )
+	return img
 
 def min_on_arrays( args ):
 	min_in_array = [ min(arg) for arg in args ]
