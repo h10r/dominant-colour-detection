@@ -3,17 +3,23 @@
 import numpy as np    
 import matplotlib.pyplot as plt
 
-N = 10
 BANDS = 20
-RAND_LIMIT = 1
+RAND_LIMIT = 50
 
-def draw_random_histograms():
+def generate_random_data(N):
+	random_data = []
 
+	for i in range(N):
+		random_data.append( np.random.randint(RAND_LIMIT, size = BANDS) )
+
+	return random_data
+
+def draw_histograms(data):
 	all_hist = []
 	all_bin_edges = []
 
-	for i in range(100):
-		hist, bin_edges = np.histogram( np.random.random(size = N), bins = range(BANDS))
+	for elem in data:
+		hist, bin_edges = np.histogram( elem, bins = range(BANDS))
 		plt.bar(bin_edges[:-1], hist, width = 1, alpha=0.1)
 
 		all_hist.append( hist )
@@ -31,4 +37,4 @@ def max_on_arrays( args ):
 	max_in_array = [ max(arg) for arg in args ]
 	return max(max_in_array)
 
-draw_random_histograms()
+draw_histograms( generate_random_data(10) )
