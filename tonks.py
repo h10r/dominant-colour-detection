@@ -10,7 +10,7 @@ import pickle
 
 HIST_BANDS = 128
 ALPHA_BANDS = 0.1
-SAVE_TO_FILE = True
+SAVE_TO_FILE = False
 
 def read_images_in_folder( path ):
 	print("tonks: Reading folder: " + path)
@@ -18,10 +18,14 @@ def read_images_in_folder( path ):
 	label = path.split("/")[-2]
 	parent_folder = os.listdir( path )
 
-	for dir_item_and_label in parent_folder: # [0:2]
-		full_path = path + "/" + dir_item_and_label
+	images = {}
 
-		images_in_path = []
+	for dir_item_and_label in parent_folder: # [0:2]
+		
+		if path.endswith("/"):
+			full_path = path + dir_item_and_label
+		else:
+			full_path = path + "/" + dir_item_and_label
 
 		# for all directories in path
 		if os.path.isdir( full_path ):
@@ -30,21 +34,27 @@ def read_images_in_folder( path ):
 			for file_in_dir in dirs: # [0:3] - @TODO remove the 6 file limit!
 				if file_in_dir.endswith(".jpg"):
 					try:
-						images_in_path.append( ( read_image_from_path( full_path + "/" + file_in_dir ), dir_item_and_label ) )
+						new_image = read_image_from_path( full_path + "/" + file_in_dir )
+
+						if( dir_item_and_label in images ):
+							images[dir_item_and_label].append( new_image ) 
+						else:
+							images[dir_item_and_label] = [ new_image ]
+
 					except Exception:
 						print("tonks: ERROR reading " + full_path + "/" + file_in_dir)
 	
-	if (len(images_in_path) > 0):
-		return(images_in_path)
+	if (len( images ) > 0):
+		return( images )
 	else:
 		print("tonks: ERROR reading " + path)
 		return(False)
 
-def calculate_histograms(image_and_label):
+def calculate_histograms( image_and_label ):
 	hist_and_bin_edges_and_label = []
 
 	for elem in image_and_label:
-		image,label = elem
+		image , label = elem
 		
 		hist, bin_edges = np.histogram( image, bins = range(HIST_BANDS), normed=True)
 		hist = hist.clip(0.0,0.1)
@@ -54,14 +64,12 @@ def calculate_histograms(image_and_label):
 	return hist_and_bin_edges_and_label
 
 def draw_histograms( hist_and_bin_edges_and_label ):
-
+	all_bin_edges = []
+	
 	for elem in hist_and_bin_edges_and_label:
-		
 		hist, bin_edges, label = elem
-
 		plt.bar(bin_edges[:-1], hist, width = 1, alpha = ALPHA_BANDS)
 
-		all_hist.append( hist )
 		all_bin_edges.append( bin_edges )
 
 	plt.xlim( min_on_arrays( all_bin_edges ), max_on_arrays( all_bin_edges ) )
@@ -113,16 +121,19 @@ def generate_random_data(N):
 #### MAIN ####
 
 def main(folder):
-	hist_and_bin_edges_and_label = read_tonks_data_from_disk()
+	hist_and_bin_edges_and_label = False # read_tonks_data_from_disk()
 
 	if hist_and_bin_edges_and_label:
 		print("tonks: Loaded histograms")
-		print( hist_and_bin_edges_and_label )
+		# print( hist_and_bin_edges_and_label )
 	else:
 		all_images = read_images_in_folder( folder )
-		hist_and_bin_edges_and_label = calculate_histograms( all_images )
+		print( all_images.keys() )
+		#print( all_images )
+		#hist_and_bin_edges_and_label = calculate_histograms( all_images )
+		#write_tonks_data_to_disk( hist_and_bin_edges_and_label )
 
-		write_tonks_data_to_disk( hist_and_bin_edges_and_label )
+	#draw_histograms( hist_and_bin_edges_and_label )
 
 if __name__ == "__main__":
 		main(sys.argv[1])
