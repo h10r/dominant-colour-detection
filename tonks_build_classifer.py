@@ -68,7 +68,7 @@ def main():
 
 			hists, bin_edges = dict_of_histograms[key]
 
-			for hist in hists[:10]:
+			for hist in hists[:14]:
 				X.append( hist )
 				Y.append( [color_class_id] )
 				
@@ -79,7 +79,7 @@ def main():
 
 		Y = np.ravel( Y )
 
-		knn = neighbors.KNeighborsClassifier(n_neighbors=2)
+		knn = neighbors.KNeighborsClassifier(n_neighbors=3)
 		print(knn)
 
 		knn.fit( X, Y )
@@ -91,10 +91,17 @@ def main():
 
 		for test_file in test_files:
 			h = Histogram.get_histogram_from_image( test_file )
-			
+			knn_predict = knn.predict_proba( h )
 
-			colour_match = int( knn.predict( h )[0] )		
-			print( color_names[colour_match] + " for : " + test_file )
+			print("*** " + test_file)
+			for p in knn_predict:
+				for i in range(len(p)):
+					if p[i] > 0.0:
+						print( color_names[i] + "\t(" + str(p[i]) + ")" )
+			print()
+
+			#colour_match = int( knn_predict[0] )		
+			#print( color_names[colour_match] + " for : " + test_file )
 	
 
 	else:
