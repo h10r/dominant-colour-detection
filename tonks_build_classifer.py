@@ -15,6 +15,8 @@ import pylab as pl
 
 from sklearn import neighbors
 
+FILE_PATH = "../library/hendrik"
+
 HIST_BANDS = 128
 ALPHA_BANDS = 0.1
 SAVE_TO_FILE = True
@@ -33,20 +35,17 @@ class Histogram():
 
 		return hist
 
-
 #### HELPER FUNCTIONS ####
-
 
 def read_tonks_data_from_disk():
 	try:
-		return pickle.load(open("tonks.dat", "rb"))
+		return pickle.load(open("data/tonks.dat", "rb"))
 	except:
 		return False
 
 def write_tonks_data_to_disk( tonks_data ):
 	print("tonks: Save data to disk")
-	pickle.dump( tonks_data, open("tonks.dat", "wb"))
-
+	pickle.dump( tonks_data, open("data/tonks.dat", "wb"))
 	
 #### MAIN ####
 
@@ -68,9 +67,13 @@ def main():
 
 			hists, bin_edges = dict_of_histograms[key]
 
-			for hist in hists[:14]:
-				X.append( hist )
-				Y.append( [color_class_id] )
+			for hist in hists:
+
+				if not np.all( np.isfinite( hist ) ):
+					pass
+				else:
+					X.append( hist )
+					Y.append( [color_class_id] )
 				
 			color_class_id = color_class_id + 1
 
@@ -80,30 +83,22 @@ def main():
 		Y = np.ravel( Y )
 
 		knn = neighbors.KNeighborsClassifier(n_neighbors=3)
-		print(knn)
 
 		knn.fit( X, Y )
 
-		test_files = glob.glob('data/test/*.jpg')
-		print( test_files )
-
-		print( color_names )
+		test_files = glob.glob( "./" + FILE_PATH + "/test/*" )
 
 		for test_file in test_files:
 			h = Histogram.get_histogram_from_image( test_file )
 			knn_predict = knn.predict_proba( h )
 
-			print("*** " + test_file)
+			print("* " + test_file)
 			for p in knn_predict:
 				for i in range(len(p)):
 					if p[i] > 0.0:
 						print( color_names[i] + "\t(" + str(p[i]) + ")" )
 			print()
-
-			#colour_match = int( knn_predict[0] )		
-			#print( color_names[colour_match] + " for : " + test_file )
 	
-
 	else:
 		print("tonks: ERROR: couldn't find histograms - Regenerate?")
 

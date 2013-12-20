@@ -90,13 +90,13 @@ def draw_histogram( histograms, bin_edges, label ):
 
 def read_tonks_data_from_disk():
 	try:
-		return pickle.load(open("tonks.dat", "rb"))
+		return pickle.load(open("data/tonks.dat", "rb"))
 	except:
 		return False
 
 def write_tonks_data_to_disk( tonks_data ):
 	print("tonks: Save data to disk")
-	pickle.dump( tonks_data, open("tonks.dat", "wb"))
+	pickle.dump( tonks_data, open("data/tonks.dat", "wb"))
 	
 def read_image_from_path( image ):
 	img = mh.imread( image )
