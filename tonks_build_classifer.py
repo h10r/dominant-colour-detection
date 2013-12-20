@@ -6,10 +6,13 @@ import re
 import numpy as np    
 import mahotas as mh
 import matplotlib.pyplot as plt
+
 import pickle
+import code
 
 import pylab as pl
 from sklearn import linear_model, datasets
+from sklearn.preprocessing import Imputer
 
 HIST_BANDS = 128
 ALPHA_BANDS = 0.1
@@ -45,27 +48,79 @@ def read_tonks_data_from_disk():
 def write_tonks_data_to_disk( tonks_data ):
 	print("tonks: Save data to disk")
 	pickle.dump( tonks_data, open("tonks.dat", "wb"))
+
 	
 #### MAIN ####
 
 def main():
 	dict_of_histograms = read_tonks_data_from_disk() # False
 
+	color_names = []
+
+	X = []
+	Y = []
+
 	if dict_of_histograms:
 		print("tonks: Loaded histograms")
 
-		print( dict_of_histograms.keys() )
-		print( len(dict_of_histograms) )
+		color_class_id = 0
+
+		for key in dict_of_histograms.keys():			
+			color_names.append( key )
+
+			hists, bin_edges = dict_of_histograms[key]
+
+			for hist in hists[:10]:
+				X.append( hist )
+				Y.append( [color_class_id] )
+				
+			color_class_id = color_class_id + 1
 
 		iris = datasets.load_iris()
-		X = iris.data[:, :2]  # we only take the first two features.
-		Y = iris.target
+		Xiris = iris.data  # we only take the first two features.
+		Yiris = iris.target
 
+		X = np.array( np.asarray( X , dtype=np.float64 ) )
+		Y = np.ravel( np.asarray( Y , dtype=np.float64 ) )
+
+		"""
+		imp = Imputer(missing_values='NaN', strategy='mean', axis=0)
+
+		X = imp.fit( X )
+		X = imp.transform( X )
+		
+		Y = imp.fit( Y )
+		Y = imp.transform( Y )
+		"""
+
+		print( X )
+		print( Y )
+
+		print( X.shape )
+		print( Y.shape )
+
+		print( "dataset.dtype")
+		print( X.dtype )
+		print( Y.dtype )
+
+		print( "isfinite")
+		print( np.all(np.isfinite( X )) )
+		print( np.all(np.isfinite( Y )) )
+
+		"""
+		print( "X" )
+		print( X )
+		print( "Y" )
+		print(  Y )
+
+		return
 		"""
 
 		h = .02  # step size in the mesh
 
 		logreg = linear_model.LogisticRegression(C=1e5)
+
+		#code.interact(local=locals())
 
 		# we create an instance of Neighbours Classifier and fit the data.
 		logreg.fit(X, Y)
@@ -75,8 +130,8 @@ def main():
 		x_min, x_max = X[:, 0].min() - .5, X[:, 0].max() + .5
 		y_min, y_max = X[:, 1].min() - .5, X[:, 1].max() + .5
 		xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
+		
 		Z = logreg.predict(np.c_[xx.ravel(), yy.ravel()])
-
 		# Put the result into a color plot
 		Z = Z.reshape(xx.shape)
 		pl.figure(1, figsize=(4, 3))
@@ -93,7 +148,6 @@ def main():
 		pl.yticks(())
 
 		pl.show()
-		"""
 
 	else:
 		print("tonks: ERROR: couldn't find histograms - Regenerate?")
