@@ -13,13 +13,20 @@ import code
 
 import pylab as pl
 
-from sklearn import neighbors
+from sklearn import linear_model
+
 
 FILE_PATH = "../photos/hendrik"
 
 HIST_BANDS = 128
 ALPHA_BANDS = 0.1
 SAVE_TO_FILE = True
+
+h = .02
+
+color_names = []
+
+clf = linear_model.LogisticRegression(C=1e5)
 
 print("tonks: Build classifier: STARTED")
 
@@ -49,10 +56,51 @@ def write_tonks_data_to_disk( tonks_data ):
 	
 #### MAIN ####
 
-def main():
-	dict_of_histograms = read_tonks_data_from_disk() # False
+def plot_clf():
+	x_min, x_max = X[:, 0].min() - .5, X[:, 0].max() + .5
+	y_min, y_max = X[:, 1].min() - .5, X[:, 1].max() + .5
+	xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
+	Z = logreg.predict(np.c_[xx.ravel(), yy.ravel()])
 
-	color_names = []
+	# Put the result into a color plot
+	Z = Z.reshape(xx.shape)
+	pl.figure(1, figsize=(4, 3))
+	pl.pcolormesh(xx, yy, Z, cmap=pl.cm.Paired)
+
+	# Plot also the training points
+	pl.scatter(X[:, 0], X[:, 1], c=Y, edgecolors='k', cmap=pl.cm.Paired)
+	pl.xlabel('Sepal length')
+	pl.ylabel('Sepal width')
+
+	pl.xlim(xx.min(), xx.max())
+	pl.ylim(yy.min(), yy.max())
+	pl.xticks(())
+	pl.yticks(())
+
+	pl.show()
+
+def direct_test():
+	global color_names
+
+	test_files = glob.glob( FILE_PATH + "/test/*" )
+
+	print( test_files )
+
+	for test_file in test_files:
+		h = Histogram.get_histogram_from_image( test_file )
+		clf_predict = clf.predict_proba( h )
+
+		print("* " + test_file.split("/")[-1] )
+		for p in clf_predict:
+			for i in range(len(p)):
+				if p[i] > 0.0:
+					print( color_names[i] + "\t(" + str(p[i]) + ")" )
+		print()
+
+def main():
+	global color_names
+
+	dict_of_histograms = read_tonks_data_from_disk() # False
 
 	X = []
 	Y = []
@@ -82,24 +130,10 @@ def main():
 
 		Y = np.ravel( Y )
 
-		knn = neighbors.KNeighborsClassifier(n_neighbors=16)
+		clf.fit( X, Y )
 
-		knn.fit( X, Y )
+		direct_test()
 
-		test_files = glob.glob( FILE_PATH + "/test/*" )
-
-		print( test_files )
-
-		for test_file in test_files:
-			h = Histogram.get_histogram_from_image( test_file )
-			knn_predict = knn.predict_proba( h )
-
-			print("* " + test_file.split("/")[-1] )
-			for p in knn_predict:
-				for i in range(len(p)):
-					if p[i] > 0.0:
-						print( color_names[i] + "\t(" + str(p[i]) + ")" )
-			print()
 	
 	else:
 		print("tonks: ERROR: couldn't find histograms - Regenerate?")
