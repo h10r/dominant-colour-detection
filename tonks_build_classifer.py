@@ -1,6 +1,7 @@
 #!/opt/local/bin/python3.3
 
 import os
+import glob
 import sys
 import re
 import numpy as np    
@@ -83,14 +84,17 @@ def main():
 
 		knn.fit( X, Y )
 
-		h = Histogram.get_histogram_from_image("/Users/hendrikheuer/Desktop/mac_wallpaper.jpg")
-		
-		print( len(h) )
+		test_files = glob.glob('data/test/*.jpg')
+		print( test_files )
 
-		colour_match = int( knn.predict( h )[0] )
-		
-		print( colour_match )
-		print( color_names[colour_match] )
+		print( color_names )
+
+		for test_file in test_files:
+			h = Histogram.get_histogram_from_image( test_file )
+			
+
+			colour_match = int( knn.predict( h )[0] )		
+			print( color_names[colour_match] + " for : " + test_file )
 	
 
 	else:
