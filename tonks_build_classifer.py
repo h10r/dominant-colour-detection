@@ -15,7 +15,7 @@ import pylab as pl
 
 from sklearn import neighbors
 
-FILE_PATH = "../library/hendrik"
+FILE_PATH = "../photos/hendrik"
 
 HIST_BANDS = 128
 ALPHA_BANDS = 0.1
@@ -82,17 +82,19 @@ def main():
 
 		Y = np.ravel( Y )
 
-		knn = neighbors.KNeighborsClassifier(n_neighbors=3)
+		knn = neighbors.KNeighborsClassifier(n_neighbors=16)
 
 		knn.fit( X, Y )
 
-		test_files = glob.glob( "./" + FILE_PATH + "/test/*" )
+		test_files = glob.glob( FILE_PATH + "/test/*" )
+
+		print( test_files )
 
 		for test_file in test_files:
 			h = Histogram.get_histogram_from_image( test_file )
 			knn_predict = knn.predict_proba( h )
 
-			print("* " + test_file)
+			print("* " + test_file.split("/")[-1] )
 			for p in knn_predict:
 				for i in range(len(p)):
 					if p[i] > 0.0:

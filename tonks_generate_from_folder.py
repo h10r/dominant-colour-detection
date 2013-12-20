@@ -10,6 +10,10 @@ import pickle
 
 HIST_BANDS = 128
 ALPHA_BANDS = 0.1
+
+GENERATE_FILES = False
+UPDATE_PLOTS = True
+
 SAVE_TO_FILE = True
 
 print("tonks: Generate from folder: STARTED")
@@ -126,7 +130,10 @@ def generate_random_data(N):
 #### MAIN ####
 
 def main(folder):
-	dict_of_histograms = read_tonks_data_from_disk() # False
+	if not GENERATE_FILES:
+		dict_of_histograms = read_tonks_data_from_disk() # False
+	else:
+		dict_of_histograms = False
 
 	if dict_of_histograms:
 		print("tonks: Loaded histograms")
@@ -136,7 +143,8 @@ def main(folder):
 		dict_of_histograms = calculate_histograms( all_images )
 		write_tonks_data_to_disk( dict_of_histograms )
 
-	draw_all_histograms( dict_of_histograms )
+	if UPDATE_PLOTS:
+		draw_all_histograms( dict_of_histograms )
 
 if __name__ == "__main__":
 	main(sys.argv[1])
