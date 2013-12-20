@@ -4,6 +4,9 @@ import os
 import glob
 import sys
 import re
+
+from operator import itemgetter
+
 import numpy as np    
 import mahotas as mh
 import matplotlib.pyplot as plt
@@ -84,17 +87,24 @@ def direct_test():
 
 	test_files = glob.glob( FILE_PATH + "/test/*" )
 
-	print( test_files )
-
 	for test_file in test_files:
 		h = Histogram.get_histogram_from_image( test_file )
+		
 		clf_predict = clf.predict_proba( h )
+
+		unsorted_predictions = []
 
 		print("* " + test_file.split("/")[-1] )
 		for p in clf_predict:
 			for i in range(len(p)):
 				if p[i] > 0.0:
-					print( color_names[i] + "\t(" + str(p[i]) + ")" )
+					unsorted_predictions.append( [color_names[i], p[i] ] )
+		
+		sorted_predictions = sorted( unsorted_predictions, key=itemgetter(1), reverse=True)
+
+		for res in sorted_predictions[:3]:
+			color, percentage = res
+			print( color + "\t" + str(int(100*percentage)).zfill(2) + "%" )
 		print()
 
 def main():
