@@ -1,9 +1,3 @@
-/**
- *
- * Allow to set color circle
- * 
- */
-
 PFont f;
 
 TextInput textInput;
@@ -21,10 +15,10 @@ void setup() {
   textFont(f);
 
   textInput = new TextInput();
-  textInput.setPositionAndDimensions( 10, height - 100, 800, 90 );
+  textInput.setPositionAndDimensions( 10, 540, 800, 55 );
 
   imageFolder = new ImageFolder();
-  imageFolder.setPositionAndDimensions( 10, 10, 600, 450 );
+  imageFolder.setPositionAndDimensions( 10, 10, 830, 500 );
   
   // float imageRation =  this.H / this.W;
   
@@ -64,8 +58,8 @@ void setupLabels() {
   l0.setPositionAndDimensions( width - 140, 20 );
   labels.add( l0 );
 
-  Label l1 = new Label( "Tag as:" );
-  l1.setPositionAndDimensions( 10, height - 110 );
+  Label l1 = new Label( "Tag as (comma-separated values):" );
+  l1.setPositionAndDimensions( 10, 530 );
   labels.add( l1 );
 }
 

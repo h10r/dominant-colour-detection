@@ -2,11 +2,11 @@ class ImageFolder {
 
   int X, Y, W, H;
 
-  final int W_MAX = 600;
-  final int H_MAX = 450;
-  
+  final int W_MAX = 830;
+  final int H_MAX = 500;
+
   float AspectRatio;
-  
+
   boolean ImageIsSet;
 
   String CurrentImagePath;
@@ -30,7 +30,8 @@ class ImageFolder {
   void display() {
     if ( this.ImageIsSet ) {
       image( this.CurrentImage, this.X, this.Y, this.W, this.H );
-    } else {
+    } 
+    else {
       fill( 192 );
       rect( this.X, this.Y, this.W, this.H );
       fill( 0 );
@@ -42,12 +43,13 @@ class ImageFolder {
 
     if ( this.isImageDirectory( folderOrFilePath ) ) {
       this.FolderPath = folderOrFilePath;
-      
+
       this.CurrentImagePath= this.crawlFolderForImagesAndSetCurrentImage();
-    } else {
+    } 
+    else {
       this.CurrentImagePath = folderOrFilePath;
     }
-    
+
     this.setCurrentImage();
   }
 
@@ -57,11 +59,11 @@ class ImageFolder {
     }
     return false;
   }
-  
+
   void setCurrentImage() {
     this.CurrentImage = loadImage( this.CurrentImagePath );
-    
-    this.AspectRatio = float(  this.CurrentImage.height ) / float( this.CurrentImage.width );
+
+    this.AspectRatio = float( this.CurrentImage.height ) / float( this.CurrentImage.width );
 
     this.W = this.W_MAX;
     this.H = int( this.W * this.AspectRatio );
@@ -70,7 +72,7 @@ class ImageFolder {
       this.W = int( this.H_MAX / this.AspectRatio );
       this.H = this.H_MAX;
     }    
-    
+
     this.ImageIsSet = true;
   }
 
@@ -115,7 +117,7 @@ class ImageFolder {
         }
       }
     }
-    
+
     return ""; // TODO
   }
 }
