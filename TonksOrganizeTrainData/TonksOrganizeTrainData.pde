@@ -5,9 +5,13 @@
  */
 
 ArrayList<Button> buttons;
+TextInput textInput;
 
 void setup() {
   size(1024, 600);
+
+  textInput = new TextInput();
+  textInput.setPositionAndDimensions( 100, height - 100, 400, 100 );
 
   buttons = new ArrayList<Button>();
 
@@ -15,11 +19,13 @@ void setup() {
 }
 
 void setupButtons() {
-
   Button b0 = new Button( "Test" );
-  b0.setPositionAndDimensions( width/2, height / 2, 150, 40 );
-
+  b0.setPositionAndDimensions( 6*width/7, 60, 125, 30 );
   buttons.add( b0 );
+
+  Button b1 = new Button( "Test" );
+  b1.setPositionAndDimensions( 6*width/7, 120, 125, 30 );
+  buttons.add( b1 );
 }
 
 void draw() {
@@ -31,6 +37,8 @@ void draw() {
     Button b = buttons.get(i);    
     b.display();
   }
+  
+  textInput.display();
 }
 
 void update(int x, int y) {
@@ -48,4 +56,10 @@ void mouseReleased() {
     b.reset();
   }
 }
+
+void keyPressed() {
+  textInput.addKey( key );
+}
+
+
 

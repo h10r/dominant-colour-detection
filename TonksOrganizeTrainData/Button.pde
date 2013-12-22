@@ -4,6 +4,10 @@ final color buttonBackgroundHighlight = color(128);
 
 final color buttonEdgeRoundness = 10;
 
+final color buttonTextOffsetX = 12;
+final color buttonTextOffsetY = 6;
+
+
 class Button {
 
   int X, Y, W, H;
@@ -33,7 +37,7 @@ class Button {
     rect( this.X, this.Y, this.W, this.H, buttonEdgeRoundness );
 
     fill(buttonForegroundColor);
-    text( this.Label, this.X, this.Y, this.W, this.H );
+    text( this.Label, this.X + buttonTextOffsetX, this.Y + buttonTextOffsetY, this.W, this.H );
   }
   
   void reset() {
