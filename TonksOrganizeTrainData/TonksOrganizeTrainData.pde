@@ -4,14 +4,18 @@
  * 
  */
 
+PFont f;
 ArrayList<Button> buttons;
 TextInput textInput;
 
 void setup() {
   size(1024, 600);
 
+  f = createFont("Consolas",12,true);
+  textFont(f);
+
   textInput = new TextInput();
-  textInput.setPositionAndDimensions( 100, height - 100, 400, 100 );
+  textInput.setPositionAndDimensions( 10, height - 100, 800, 90 );
 
   buttons = new ArrayList<Button>();
 
@@ -58,7 +62,11 @@ void mouseReleased() {
 }
 
 void keyPressed() {
-  textInput.addKey( key );
+  if (keyCode == BACKSPACE || keyCode == DELETE) {
+      textInput.backspace();
+  } else {
+    textInput.addKey( key );
+  }
 }
 
 

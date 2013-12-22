@@ -1,9 +1,8 @@
 final color textInputForegroundColor = color(0);
-final color textInputBackgroundColor = color(0,128,0);
+final color textInputBackgroundColor = color(255);
 
 final color textInputTextOffsetX = 6;
 final color textInputTextOffsetY = 6;
-
 
 class TextInput {
 
@@ -36,8 +35,15 @@ class TextInput {
   }
   
   void addKey( char newKey ) {
-    this.inputText = this.inputText + newKey;
-    println( this.inputText ); 
+    if ( key != CODED) {
+      this.inputText = this.inputText + newKey;
+    } 
+  }
+  
+  void backspace() {
+    if ( this.inputText.length() > 0 ) {
+      this.inputText = this.inputText.substring(0,this.inputText.length()-1);
+    }
   }
 }
 
