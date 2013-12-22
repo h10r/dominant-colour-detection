@@ -12,6 +12,7 @@ ArrayList<Button> buttons;
 ArrayList<Label> labels;
 
 FolderPicker folderPicker;
+ImageFolder imageFolder;
 
 void setup() {
   size(1024, 600);
@@ -22,7 +23,12 @@ void setup() {
   textInput = new TextInput();
   textInput.setPositionAndDimensions( 10, height - 100, 800, 90 );
 
-  folderPicker = new FolderPicker();
+  imageFolder = new ImageFolder();
+  imageFolder.setPositionAndDimensions( 10, 10, 600, 450 );
+  
+  // float imageRation =  this.H / this.W;
+  
+  folderPicker = new FolderPicker( imageFolder );
 
   labels = new ArrayList<Label>();
   setupLabels();  
@@ -79,6 +85,8 @@ void draw() {
   }
 
   textInput.display();
+  
+  imageFolder.display();
 }
 
 void update(int x, int y) {
