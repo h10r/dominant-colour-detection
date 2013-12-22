@@ -1,4 +1,4 @@
-class FolderPicker {
+class FolderPicker extends ClickHandler {
 
   String[] InputFileContents;
   String FolderPath;
@@ -17,6 +17,11 @@ class FolderPicker {
     else {
       println("User selected " + selection.getAbsolutePath());
     }
+  }
+  
+  void run() {
+    println( "run() folderPicker" );
+    this.show();
   }
 }
 

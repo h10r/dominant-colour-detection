@@ -16,19 +16,20 @@ FolderPicker folderPicker;
 void setup() {
   size(1024, 600);
 
-  f = createFont("Consolas",12,true);
+  f = createFont("Consolas", 12, true);
   textFont(f);
 
   textInput = new TextInput();
   textInput.setPositionAndDimensions( 10, height - 100, 800, 90 );
 
+  folderPicker = new FolderPicker();
+
+  labels = new ArrayList<Label>();
+  setupLabels();  
+
+  // make sure the clickHandler are set before setting the buttons
   buttons = new ArrayList<Button>();
   setupButtons();
-  
-  labels = new ArrayList<Label>();
-  setupLabels();
-  
-  folderPicker = new FolderPicker();
 }
 
 void setupButtons() {
@@ -39,6 +40,17 @@ void setupButtons() {
   Button b1 = new Button( "Test" );
   b1.setPositionAndDimensions( width - 140, 80, 125, 30 );
   buttons.add( b1 );
+
+  Button bFolderSelect = new Button( "Select Folder" );
+  bFolderSelect.setPositionAndDimensions( width - 140, height - 90, 125, 30 );
+  bFolderSelect.setBackgroundAndHighlightColors( color(46, 204, 113), color(92, 184, 92) );
+  bFolderSelect.setClickHandler( folderPicker );
+  buttons.add( bFolderSelect );
+
+  Button bSave = new Button( "Save Database" );
+  bSave.setPositionAndDimensions( width - 140, height - 50, 125, 30 );
+  bSave.setBackgroundAndHighlightColors( color(231, 76, 60), color(236, 112, 99) );
+  buttons.add( bSave );
 }
 
 void setupLabels() {
@@ -60,12 +72,12 @@ void draw() {
     Button b = buttons.get(i);    
     b.display();
   }
-  
+
   for (int i = labels.size()-1; i >= 0; i--) {
     Label l = labels.get(i);    
     l.display();
   }
-  
+
   textInput.display();
 }
 
@@ -79,21 +91,25 @@ void update(int x, int y) {
 }
 
 void mousePressed() {
-  // make this on button click
-  folderPicker.show();
 }
 
 void mouseReleased() {
   for (int i = buttons.size()-1; i >= 0; i--) {
     Button b = buttons.get(i);
-    b.reset();
+
+    if ( b.IsOver ) {
+      b.buttonPressed();
+    }
+    
+     b.reset();
   }
 }
 
 void keyPressed() {
   if (keyCode == BACKSPACE || keyCode == DELETE) {
-      textInput.backspace();
-  } else {
+    textInput.backspace();
+  } 
+  else {
     textInput.addKey( key );
   }
 }
@@ -101,5 +117,4 @@ void keyPressed() {
 void folderSelected(File selection) {
   folderPicker.folderSelected( selection );
 }
-
 
