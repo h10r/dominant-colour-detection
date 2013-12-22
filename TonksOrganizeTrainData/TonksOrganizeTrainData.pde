@@ -79,6 +79,7 @@ void update(int x, int y) {
 }
 
 void mousePressed() {
+  // make this on button click
   folderPicker.show();
 }
 
