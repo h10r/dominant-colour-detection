@@ -5,8 +5,7 @@ final color buttonBackgroundHighlight = color(128);
 final color buttonEdgeRoundness = 10;
 
 final color buttonTextOffsetX = 12;
-final color buttonTextOffsetY = 6;
-
+final color buttonTextOffsetY = 9;
 
 class Button {
 

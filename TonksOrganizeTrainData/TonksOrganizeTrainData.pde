@@ -9,9 +9,9 @@ PFont f;
 TextInput textInput;
 
 ArrayList<Button> buttons;
-
 ArrayList<Label> labels;
 
+FolderPicker folderPicker;
 
 void setup() {
   size(1024, 600);
@@ -27,6 +27,8 @@ void setup() {
   
   labels = new ArrayList<Label>();
   setupLabels();
+  
+  folderPicker = new FolderPicker();
 }
 
 void setupButtons() {
@@ -76,6 +78,10 @@ void update(int x, int y) {
   }
 }
 
+void mousePressed() {
+  folderPicker.show();
+}
+
 void mouseReleased() {
   for (int i = buttons.size()-1; i >= 0; i--) {
     Button b = buttons.get(i);
@@ -91,5 +97,8 @@ void keyPressed() {
   }
 }
 
+void folderSelected(File selection) {
+  folderPicker.folderSelected( selection );
+}
 
 
