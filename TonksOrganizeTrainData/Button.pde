@@ -34,7 +34,6 @@ class Button {
   }
 
   void setClickHandler( ClickHandler handler ) {
-    println( handler );
     this.Handler = handler;
   }
 
@@ -56,7 +55,10 @@ class Button {
   }
 
   void buttonPressed() {
-    this.Handler.run();
+    println( "buttonPressed" );
+    if ( this.Handler != null ) {
+      this.Handler.run();
+    }
   }
 
   void checkIfMouseOver(int mouse_x, int mouse_Y) {
