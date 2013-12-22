@@ -16,7 +16,6 @@ class FolderPicker extends ClickHandler {
     else {
       String path = selection.getAbsolutePath();
       this.Images.setImagePath( path );
-      this.Images.crawlFolderForImages();
     }
   }
 

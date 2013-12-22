@@ -1,19 +1,22 @@
 class ImageFolder {
 
   int X, Y, W, H;
-  
+
   final int W_MAX = 600;
   final int H_MAX = 450;
   
+  float AspectRatio;
+  
+  boolean ImageIsSet;
+
   String CurrentImagePath;
   String FolderPath;
   ArrayList<String> ListOfImageFiles;
-  
+
   PImage CurrentImage;
 
   public ImageFolder() {
-
-    // this.CurrentImage = loadImage("moonwalk.jpg");
+    this.ImageIsSet = false;
   }
 
   void setPositionAndDimensions( int x, int y, int w, int h ) {
@@ -25,19 +28,50 @@ class ImageFolder {
   }
 
   void display() {
-    fill(0,0,255);
-    rect( this.X, this.Y, this.W, this.H );
-    // image( this.CurrentImage, this.X, this.Y, this.W, this.H );
+    if ( this.ImageIsSet ) {
+      image( this.CurrentImage, this.X, this.Y, this.W, this.H );
+    } else {
+      fill( 192 );
+      rect( this.X, this.Y, this.W, this.H );
+      fill( 0 );
+      text( "Please select an image or folder", this.X + (this.W / 3.0), this.Y + (this.H / 2.0) );
+    }
   }
-  
-  void setImagePath( String folderPath ) {
-    println( "setImagePath " + folderPath );
+
+  void setImagePath( String folderOrFilePath ) {
+
+    if ( this.isImageDirectory( folderOrFilePath ) ) {
+      this.FolderPath = folderOrFilePath;
+      
+      this.CurrentImagePath= this.crawlFolderForImagesAndSetCurrentImage();
+    } else {
+      this.CurrentImagePath = folderOrFilePath;
+    }
     
-    this.FolderPath = folderPath;
+    this.setCurrentImage();
+  }
+
+  boolean isImageDirectory( String fileName ) {
+    if ( splitTokens( fileName, "." ).length != 2) {
+      return true;
+    }
+    return false;
   }
   
-  void isImageDirectory() {
-  
+  void setCurrentImage() {
+    this.CurrentImage = loadImage( this.CurrentImagePath );
+    
+    this.AspectRatio = float(  this.CurrentImage.height ) / float( this.CurrentImage.width );
+
+    this.W = this.W_MAX;
+    this.H = int( this.W * this.AspectRatio );
+
+    if ( this.H > this.H_MAX ) {
+      this.W = int( this.H_MAX / this.AspectRatio );
+      this.H = this.H_MAX;
+    }    
+    
+    this.ImageIsSet = true;
   }
 
   void previousImage() {
@@ -45,10 +79,10 @@ class ImageFolder {
 
   void nextImage() {
   }
-  
-  void crawlFolderForImages() {
+
+  String crawlFolderForImagesAndSetCurrentImage() {
     String[] allowedImageFileTypes = { 
-      "jpeg", "jpg", "tif", "tiff", "png"
+      "jpeg", "jpg", "png"
     };
 
     this.ListOfImageFiles = new ArrayList<String>();
@@ -73,7 +107,7 @@ class ImageFolder {
             if ( currentSplitFilename[1].equals( allowedImageFileTypes[suffix] ) ) {
               this.ListOfImageFiles.add( filenames[ i ] );
             }
-            
+
             if ( this.CurrentImagePath == "" ) {
               this.CurrentImagePath = filenames[ i ];
             }
@@ -81,6 +115,8 @@ class ImageFolder {
         }
       }
     }
+    
+    return ""; // TODO
   }
 }
 
