@@ -3,6 +3,8 @@ class FolderPicker extends ClickHandler {
   String[] InputFileContents;
   String FolderPath;
 
+  ArrayList<String> listOfImageFiles;
+
   public FolderPicker() {
   }
 
@@ -16,10 +18,10 @@ class FolderPicker extends ClickHandler {
     } 
     else {
       this.FolderPath = selection.getAbsolutePath();
- 
-      println("User selected " + this.FolderPath);
-      
-      println( this.listFileNames() );
+
+      println("User selected: " + this.FolderPath);
+
+      this.crawlFolderForImages();
     }
   }
 
@@ -28,48 +30,35 @@ class FolderPicker extends ClickHandler {
     this.show();
   }
 
-  /* credit to http://computationalphoto.mlog.taik.fi/2011/03/05/processing-finding-images-in-a-directory-listing/ */
-  String[] listFileNames() {
-
-    File file = new File( this.FolderPath );
-    if (file.isDirectory()) {
-      String[] names = file.list();
-      return names;
-    }
-    else {
-      return null;
-    }
-  }
-
-  String[] findImgFiles( String[] filenames ) {
-
-    String[] outList_of_foundImageFiles = {};
-    
-    String[] list_of_imageFileSuffixes = { 
+  void crawlFolderForImages() {
+    String[] allowedImageFileTypes = { 
       "jpeg", "jpg", "tif", "tiff", "png"
     };
 
-    if ( this.FolderPath.charAt( this.FolderPath.length() -1 ) != '/' ) {
-      this.FolderPath = this.FolderPath + '/';
-    }
+    listOfImageFiles = new ArrayList<String>();
 
-    for ( int file_i = 0; file_i < filenames.length ; file_i++ ) {
+    File file = new File( this.FolderPath );
+    if (file.isDirectory()) {
+      String[] filenames = file.list();
 
-      println(" looking at file " + filenames[file_i] + " checking if it might not just be a image file ");
+      for ( int i = 0; i < filenames.length ; i++ ) {
+        String[] currentSplitFilename = splitTokens( filenames[ i ], "." );
 
-      String[] curr_filenameSplit = splitTokens( filenames[ file_i ], "." );
+        println( currentSplitFilename.length );
 
-      for ( int fileSuffix_i = 0 ; fileSuffix_i < list_of_imageFileSuffixes.length ; fileSuffix_i++ ) {
-        String examinedFile_filesuffix = curr_filenameSplit[1] ;
-        String listOfValid_fileSuffixed = list_of_imageFileSuffixes[fileSuffix_i] ;
-
-        if ( examinedFile_filesuffix.equals( listOfValid_fileSuffixed ) ) {
-          outList_of_foundImageFiles = append( outList_of_foundImageFiles, this.FolderPath + filenames[ file_i ] );
+        if ( currentSplitFilename.length == 1 ) { // if directory
+          // println( currentSplitFilename[0] );
+          // could be extended to recursively open subfolders
+        } 
+        else if ( currentSplitFilename.length == 2 ) { // if file
+          for ( int suffix = 0; suffix < allowedImageFileTypes.length; suffix++ ) {
+            if ( currentSplitFilename[1].equals( allowedImageFileTypes[suffix] ) ) {
+              listOfImageFiles.add( filenames[ i ] );
+            }
+          }
         }
       }
     }
-
-    return outList_of_foundImageFiles;
   }
 }
 
