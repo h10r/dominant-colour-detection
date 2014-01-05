@@ -74,7 +74,7 @@ class ImageFolder {
       this.CurrentImageIndex = this.findImageIndexFromFilename( filename );
     }
 
-    this.setCurrentImage();
+    this.updateImage();
   }
 
   boolean isDirectory( String path ) {
@@ -91,7 +91,7 @@ class ImageFolder {
     return false;
   }
 
-  void setCurrentImage() {   
+  void updateImage() {   
     String fullPath = this.CurrentPath + this.CurrentFolder.get( this.CurrentImageIndex );
     
     this.CurrentImage = loadImage( fullPath );
@@ -115,7 +115,13 @@ class ImageFolder {
       return;
     }
     
-    
+    if ( this.CurrentImageIndex > 0 ) {
+      this.CurrentImageIndex = this.CurrentImageIndex - 1;
+    } else {
+      this.CurrentImageIndex = this.CurrentFolder.size()-1;
+    }
+
+    this.updateImage();
 
     println( "previousImage" );
   }
@@ -125,6 +131,14 @@ class ImageFolder {
       println( "Set image folder!" );
       return;
     }
+    
+    if ( this.CurrentImageIndex < this.CurrentFolder.size()-1 ) {
+      this.CurrentImageIndex = this.CurrentImageIndex + 1;
+    } else {
+      this.CurrentImageIndex = 0;
+    }
+    
+    this.updateImage();
 
     println( "nextImage" );
   }
