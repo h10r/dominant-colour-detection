@@ -1,3 +1,13 @@
+/*
+*
+* Tonks Classificiation Helper
+*
+* Hendrik Heuer, 2014
+*
+* See LICENSE.MD and README.MD
+*
+*/
+
 PFont f;
 
 TextInput textInput;
@@ -11,6 +21,8 @@ FolderPicker folderPicker;
 ImageFolder imageFolder;
 
 KeyHandler keyHandler;
+
+Database database;
 
 void setup() {
   size(1024, 600);
@@ -36,6 +48,8 @@ void setup() {
   // make sure the clickHandler are set before setting the buttons
   buttons = new ArrayList<Button>();
   setupButtons();
+  
+  database = new Database( this );
 }
 
 void setupLabels() {
