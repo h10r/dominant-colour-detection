@@ -8,11 +8,15 @@ ArrayList<Label> labels;
 FolderPicker folderPicker;
 ImageFolder imageFolder;
 
+KeyHandler keyHandler;
+
 void setup() {
   size(1024, 600);
 
   f = createFont("Consolas", 12, true);
   textFont(f);
+
+  keyHandler = new KeyHandler();
 
   textInput = new TextInput();
   textInput.setPositionAndDimensions( 10, 540, 800, 55 );
@@ -66,7 +70,7 @@ void setupLabels() {
 void draw() {
   update(mouseX, mouseY);
 
-  background( 168 );
+  background( 128 ); // 94 is my desktop background grey
 
   for (int i = buttons.size()-1; i >= 0; i--) {
     Button b = buttons.get(i);    
@@ -108,12 +112,7 @@ void mouseReleased() {
 }
 
 void keyPressed() {
-  if (keyCode == BACKSPACE || keyCode == DELETE) {
-    textInput.backspace();
-  } 
-  else {
-    textInput.addKey( key );
-  }
+  keyHandler.pressed();
 }
 
 void folderSelected(File selection) {
