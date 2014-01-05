@@ -76,7 +76,7 @@ void setupLabels() {
 void draw() {
   update(mouseX, mouseY);
 
-  background( 128 ); // 94 is my desktop background grey
+  background( 231, 235, 240 ); // 94 is my desktop background grey
 
   for (int i = buttons.size()-1; i >= 0; i--) {
     Button b = buttons.get(i);    

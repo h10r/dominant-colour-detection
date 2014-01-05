@@ -33,7 +33,7 @@ class ImageFolder {
       image( this.CurrentImage, this.X, this.Y, this.W, this.H );
     } 
     else {
-      fill( 192 );
+      fill( 207 );
       rect( this.X, this.Y, this.W, this.H );
       fill( 0 );
       text( "Please select an image or folder", this.X + (this.W / 3.0), this.Y + (this.H / 2.0) );
@@ -147,7 +147,7 @@ class ImageFolder {
 
   boolean isOfAllowedFileType( String filePath ) {
     for ( int suffix = 0; suffix < allowedFileTypes.length; suffix++ ) {
-      if ( filePath.equals( allowedFileTypes[suffix] ) ) {
+      if ( filePath.toLowerCase().equals( allowedFileTypes[suffix] ) ) {
         return true;
       }
     }
