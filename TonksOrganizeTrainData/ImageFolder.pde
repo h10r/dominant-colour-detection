@@ -11,6 +11,7 @@ class ImageFolder {
 
   int CurrentImageIndex;
 
+  String CurrentPath;
   ArrayList<String> CurrentFolder;
 
   PImage CurrentImage;
@@ -42,7 +43,9 @@ class ImageFolder {
   void setImagePath( String imagePath ) {
     
     if ( this.isDirectory( imagePath ) ) {
-      this.crawlFolder( imagePath );
+      this.CurrentPath = imagePath;
+      this.crawlFolder( this.CurrentPath );
+      
       this.CurrentImageIndex = 0;
     } else {
       String[] splitByFileType = split( imagePath, "." );
@@ -53,7 +56,6 @@ class ImageFolder {
       }
 
       String[] splitPath = splitTokens( imagePath, "/" );
-
       String pathWithoutFilename = "/";
       String filename = "";
 
@@ -66,16 +68,13 @@ class ImageFolder {
         }
       }
 
-      this.crawlFolder( pathWithoutFilename );
+      this.CurrentPath = pathWithoutFilename;
 
-      //this.CurrentImageIndex = 0;
+      this.crawlFolder( this.CurrentPath );
       this.CurrentImageIndex = this.findImageIndexFromFilename( filename );
-      
-      println( filename );
-      println( this.CurrentImageIndex );
     }
 
-    // this.setCurrentImage();
+    this.setCurrentImage();
   }
 
   boolean isDirectory( String path ) {
@@ -92,11 +91,10 @@ class ImageFolder {
     return false;
   }
 
-  void setCurrentImage() {
-    /*
-    this.CurrentImageIndex
-     
-     this.CurrentImage = loadImage( this.CurrentImagePath );
+  void setCurrentImage() {   
+    String fullPath = this.CurrentPath + this.CurrentFolder.get( this.CurrentImageIndex );
+    
+    this.CurrentImage = loadImage( fullPath );
      
      this.AspectRatio = float( this.CurrentImage.height ) / float( this.CurrentImage.width );
      
@@ -109,7 +107,6 @@ class ImageFolder {
      }    
      
      this.ImageIsSet = true;
-     */
   }
 
   void previousImage() {
@@ -117,6 +114,8 @@ class ImageFolder {
       println( "Set image folder!" );
       return;
     }
+    
+    
 
     println( "previousImage" );
   }

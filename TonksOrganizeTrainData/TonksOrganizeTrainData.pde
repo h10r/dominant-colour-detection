@@ -106,7 +106,6 @@ void mouseReleased() {
     if ( b.IsOver ) {
       b.buttonPressed();
     }
-    
      b.reset();
   }
 }
