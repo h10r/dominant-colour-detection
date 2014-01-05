@@ -41,24 +41,91 @@ void setup() {
 final int MENU_LEFT_X = 850;
 final int MENU_LEFT_W = 160;
 
+final int MENU_FIRST_Y = 0;
+final int MENU_OFFSET_Y = 35;
+
 void setupButtons() {
   
-  Button b0 = new Button( "Test" );
-  b0.setPositionAndDimensions( MENU_LEFT_X, 40, MENU_LEFT_W, 30 );
-  buttons.add( b0 );
-
-  Button b1 = new Button( "Test" );
-  b1.setPositionAndDimensions( MENU_LEFT_X, 80, MENU_LEFT_W, 30 );
+  Button b1 = new Button( "Yellow" );
+  b1.setPositionAndDimensions( MENU_LEFT_X, MENU_FIRST_Y + (1*MENU_OFFSET_Y), MENU_LEFT_W, 30 );
+  b1.setCheckable( true );
+  b1.setBackgroundAndHighlightColors( color(46, 204, 113), color(92, 184, 92) );
   buttons.add( b1 );
+  
+  Button b2 = new Button( "Yellow-Orange" );
+  b2.setPositionAndDimensions( MENU_LEFT_X, MENU_FIRST_Y + (2*MENU_OFFSET_Y), MENU_LEFT_W, 30 );
+  b2.setCheckable( true );
+  b2.setBackgroundAndHighlightColors( color(46, 204, 113), color(92, 184, 92) );
+  buttons.add( b2 );
+  
+  Button b3 = new Button( "Orange" );
+  b3.setPositionAndDimensions( MENU_LEFT_X, MENU_FIRST_Y + (3*MENU_OFFSET_Y), MENU_LEFT_W, 30 );
+  b3.setCheckable( true );
+  b3.setBackgroundAndHighlightColors( color(46, 204, 113), color(92, 184, 92) );
+  buttons.add( b3 );
+
+  Button b4 = new Button( "Red-Orange" );
+  b4.setPositionAndDimensions( MENU_LEFT_X, MENU_FIRST_Y + (4*MENU_OFFSET_Y), MENU_LEFT_W, 30 );
+  b4.setCheckable( true );
+  b4.setBackgroundAndHighlightColors( color(46, 204, 113), color(92, 184, 92) );
+  buttons.add( b4 );
+
+  Button b5 = new Button( "Red" );
+  b5.setPositionAndDimensions( MENU_LEFT_X, MENU_FIRST_Y + (5*MENU_OFFSET_Y), MENU_LEFT_W, 30 );
+  b5.setCheckable( true );
+  b5.setBackgroundAndHighlightColors( color(46, 204, 113), color(92, 184, 92) );
+  buttons.add( b5 );
+
+  Button b6 = new Button( "Red-Purple" );
+  b6.setPositionAndDimensions( MENU_LEFT_X, MENU_FIRST_Y + (6*MENU_OFFSET_Y), MENU_LEFT_W, 30 );
+  b6.setCheckable( true );
+  b6.setBackgroundAndHighlightColors( color(46, 204, 113), color(92, 184, 92) );
+  buttons.add( b6 );
+
+  Button b7 = new Button( "Purple" );
+  b7.setPositionAndDimensions( MENU_LEFT_X, MENU_FIRST_Y + (7*MENU_OFFSET_Y), MENU_LEFT_W, 30 );
+  b7.setCheckable( true );
+  b7.setBackgroundAndHighlightColors( color(46, 204, 113), color(92, 184, 92) );
+  buttons.add( b7 );
+
+  Button b8 = new Button( "Blue-Purple" );
+  b8.setPositionAndDimensions( MENU_LEFT_X, MENU_FIRST_Y + (8*MENU_OFFSET_Y), MENU_LEFT_W, 30 );
+  b8.setCheckable( true );
+  b8.setBackgroundAndHighlightColors( color(46, 204, 113), color(92, 184, 92) );
+  buttons.add( b8 );
+
+  Button b9 = new Button( "Blue" );
+  b9.setPositionAndDimensions( MENU_LEFT_X, MENU_FIRST_Y + (9*MENU_OFFSET_Y), MENU_LEFT_W, 30 );
+  b9.setCheckable( true );
+  b9.setBackgroundAndHighlightColors( color(46, 204, 113), color(92, 184, 92) );
+  buttons.add( b9 );
+
+  Button b10 = new Button( "Blue-Green" );
+  b10.setPositionAndDimensions( MENU_LEFT_X, MENU_FIRST_Y + (10*MENU_OFFSET_Y), MENU_LEFT_W, 30 );
+  b10.setCheckable( true );
+  b10.setBackgroundAndHighlightColors( color(46, 204, 113), color(92, 184, 92) );
+  buttons.add( b10 );
+
+  Button b11 = new Button( "Green" );
+  b11.setPositionAndDimensions( MENU_LEFT_X, MENU_FIRST_Y + (11*MENU_OFFSET_Y), MENU_LEFT_W, 30 );
+  b11.setCheckable( true );
+  b11.setBackgroundAndHighlightColors( color(46, 204, 113), color(92, 184, 92) );
+  buttons.add( b11 );
+
+  Button b12 = new Button( "Yellow-Green" );
+  b12.setPositionAndDimensions( MENU_LEFT_X, MENU_FIRST_Y + (12*MENU_OFFSET_Y), MENU_LEFT_W, 30 );
+  b12.setCheckable( true );
+  b12.setBackgroundAndHighlightColors( color(46, 204, 113), color(92, 184, 92) );
+  buttons.add( b12 );
 
   Button bFolderSelect = new Button( "Select Folder" );
-  bFolderSelect.setPositionAndDimensions( MENU_LEFT_X, height - 90, MENU_LEFT_W, 30 );
+  bFolderSelect.setPositionAndDimensions( MENU_LEFT_X, height - 70, MENU_LEFT_W, 30 );
   bFolderSelect.setBackgroundAndHighlightColors( color(46, 204, 113), color(92, 184, 92) );
   bFolderSelect.setClickHandler( folderPicker );
   buttons.add( bFolderSelect );
 
   Button bSave = new Button( "Save Database" );
-  bSave.setPositionAndDimensions( MENU_LEFT_X, height - 50, MENU_LEFT_W, 30 );
+  bSave.setPositionAndDimensions( MENU_LEFT_X, height - 35, MENU_LEFT_W, 30 );
   bSave.setBackgroundAndHighlightColors( color(231, 76, 60), color(236, 112, 99) );
   buttons.add( bSave );
 }
