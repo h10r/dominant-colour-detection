@@ -189,6 +189,13 @@ void mouseReleased() {
   }
 }
 
+void resetButtonStates() {
+  for (int i = buttons.size()-1; i >= 0; i--) {
+    Button b = buttons.get(i);
+    b.resetCheckbox();
+  }
+}
+
 void keyPressed() {
   keyHandler.pressed();
 }

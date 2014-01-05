@@ -124,6 +124,8 @@ class ImageFolder {
     }
 
     this.updateImage();
+    
+    resetButtonStates();
   }
 
   void nextImage() {
@@ -139,6 +141,8 @@ class ImageFolder {
     }
     
     this.updateImage();
+    
+    resetButtonStates();
   }
 
   final String[] allowedFileTypes = { 
