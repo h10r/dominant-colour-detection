@@ -15,7 +15,7 @@ KeyHandler keyHandler;
 void setup() {
   size(1024, 600);
 
-  f = createFont("Consolas", 12, true);
+  f = createFont("OpenSans-Bold", 12, true);
   textFont(f);
 
   keyHandler = new KeyHandler();
