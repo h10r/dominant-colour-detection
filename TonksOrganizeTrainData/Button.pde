@@ -1,9 +1,16 @@
+
 class Button {
+  
+  final PImage CachedCheckboxImageUnchecked = loadImage("images/unchecked.png");
+  final PImage CachedCheckboxImageChecked = loadImage("images/checked.png");
 
   int X, Y, W, H;
   String Label;
 
   boolean IsOver = false;
+  
+  boolean IsCheckable = false;
+  boolean IsChecked = false;
 
   color ButtonForegroundColor = color(255);
   color ButtonBackgroundColor = color(0);
@@ -11,8 +18,8 @@ class Button {
 
   color ButtonEdgeRoundness = 10;
 
-  color ButtonTextOffsetX = 12;
-  color ButtonTextOffsetY = 9;
+  color ButtonTextOffsetX = 32;
+  color ButtonTextOffsetY = 7;
 
   ClickHandler Handler;
 
@@ -36,6 +43,10 @@ class Button {
   void setClickHandler( ClickHandler handler ) {
     this.Handler = handler;
   }
+  
+  void setCheckable( boolean isCheckable ) {
+    this.IsCheckable = isCheckable;
+  }
 
   void display() {
     if ( this.IsOver ) {
@@ -45,6 +56,10 @@ class Button {
       fill( this.ButtonBackgroundColor );
     }
     rect( this.X, this.Y, this.W, this.H, this.ButtonEdgeRoundness );
+
+    if ( this.IsCheckable ) {
+      image( CachedCheckboxImageUnchecked, this.X + 5, this.Y + 5, 20, 20 );
+    }
 
     fill( this.ButtonForegroundColor );
     text( this.Label, this.X + this.ButtonTextOffsetX, this.Y + this.ButtonTextOffsetY, this.W, this.H );
@@ -57,6 +72,7 @@ class Button {
   void buttonPressed() {
     println( "buttonPressed" );
     if ( this.Handler != null ) {
+      this.IsChecked = true;
       this.Handler.run();
     }
   }

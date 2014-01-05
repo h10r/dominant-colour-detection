@@ -38,30 +38,34 @@ void setup() {
   setupButtons();
 }
 
+final int MENU_LEFT_X = 850;
+final int MENU_LEFT_W = 160;
+
 void setupButtons() {
+  
   Button b0 = new Button( "Test" );
-  b0.setPositionAndDimensions( width - 140, 40, 125, 30 );
+  b0.setPositionAndDimensions( MENU_LEFT_X, 40, MENU_LEFT_W, 30 );
   buttons.add( b0 );
 
   Button b1 = new Button( "Test" );
-  b1.setPositionAndDimensions( width - 140, 80, 125, 30 );
+  b1.setPositionAndDimensions( MENU_LEFT_X, 80, MENU_LEFT_W, 30 );
   buttons.add( b1 );
 
   Button bFolderSelect = new Button( "Select Folder" );
-  bFolderSelect.setPositionAndDimensions( width - 140, height - 90, 125, 30 );
+  bFolderSelect.setPositionAndDimensions( MENU_LEFT_X, height - 90, MENU_LEFT_W, 30 );
   bFolderSelect.setBackgroundAndHighlightColors( color(46, 204, 113), color(92, 184, 92) );
   bFolderSelect.setClickHandler( folderPicker );
   buttons.add( bFolderSelect );
 
   Button bSave = new Button( "Save Database" );
-  bSave.setPositionAndDimensions( width - 140, height - 50, 125, 30 );
+  bSave.setPositionAndDimensions( MENU_LEFT_X, height - 50, MENU_LEFT_W, 30 );
   bSave.setBackgroundAndHighlightColors( color(231, 76, 60), color(236, 112, 99) );
   buttons.add( bSave );
 }
 
 void setupLabels() {
   Label l0 = new Label( "Colors in image:" );
-  l0.setPositionAndDimensions( width - 140, 20 );
+  l0.setPositionAndDimensions( MENU_LEFT_X, 20 );
   labels.add( l0 );
 
   Label l1 = new Label( "Tag as (comma-separated values):" );
