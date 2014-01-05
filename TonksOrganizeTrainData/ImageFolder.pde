@@ -40,7 +40,6 @@ class ImageFolder {
   }
 
   void setImagePath( String imagePath ) {
-
     if ( this.isDirectory( imagePath ) ) {
       this.crawlFolder( imagePath );
 
@@ -48,35 +47,43 @@ class ImageFolder {
     } 
     else {
       String[] splitByFileType = split( imagePath, "." );
-      
+
+      println( splitByFileType[splitByFileType.length-1] );
+
       if ( !this.isOfAllowedFileType( splitByFileType[splitByFileType.length-1] ) ) {
         println( "The file you selected is not an image!" );
         return;
       }
-      
+
       String[] splitPath = splitTokens( imagePath, "/" );
-     
+
       String pathWithoutFilename = "/";
       String filename = "";
-      
-      for( int s = 0; s < splitPath.length; s++ ) {
+
+      for ( int s = 0; s < splitPath.length; s++ ) {
         if ( s < splitPath.length - 1 ) {
           pathWithoutFilename += splitPath[s] + "/";
-        } else if ( s == splitPath.length - 1 ) {
+        } 
+        else if ( s == splitPath.length - 1 ) {
           filename = splitPath[s];
         }
       }
-      
+
       this.crawlFolder( pathWithoutFilename );
-            
-      this.CurrentImageIndex = 0;
-      // this.CurrentImageIndex = this.findImageIndexFromFilename( fileName );
+
+      //this.CurrentImageIndex = 0;
+      this.CurrentImageIndex = this.findImageIndexFromFilename( filename );
+      
+      println( filename );
+      println( this.CurrentImageIndex );
     }
 
     // this.setCurrentImage();
   }
 
   boolean isDirectory( String path ) {
+    println( splitTokens( path, "." ).length );
+    
     if ( splitTokens( path, "." ).length != 2) {
       return true;
     }
@@ -86,21 +93,21 @@ class ImageFolder {
   void setCurrentImage() {
     /*
     this.CurrentImageIndex
-    
-    this.CurrentImage = loadImage( this.CurrentImagePath );
-
-    this.AspectRatio = float( this.CurrentImage.height ) / float( this.CurrentImage.width );
-
-    this.W = this.W_MAX;
-    this.H = int( this.W * this.AspectRatio );
-
-    if ( this.H > this.H_MAX ) {
-      this.W = int( this.H_MAX / this.AspectRatio );
-      this.H = this.H_MAX;
-    }    
-
-    this.ImageIsSet = true;
-    */
+     
+     this.CurrentImage = loadImage( this.CurrentImagePath );
+     
+     this.AspectRatio = float( this.CurrentImage.height ) / float( this.CurrentImage.width );
+     
+     this.W = this.W_MAX;
+     this.H = int( this.W * this.AspectRatio );
+     
+     if ( this.H > this.H_MAX ) {
+     this.W = int( this.H_MAX / this.AspectRatio );
+     this.H = this.H_MAX;
+     }    
+     
+     this.ImageIsSet = true;
+     */
   }
 
   void previousImage() {
@@ -135,43 +142,38 @@ class ImageFolder {
   }
 
   void crawlFolder( String folderPath ) {
-
     this.CurrentFolder = new ArrayList<String>();
-
     File file = new File( folderPath );
 
     if ( file.isDirectory() ) {
       String[] filenames = file.list();
 
-
       for ( int i = 0; i < filenames.length ; i++ ) {
         String[] currentSplitFilename = splitTokens( filenames[ i ], "." );
 
-        println( filenames[ i ] );
-        println( currentSplitFilename.length );
-
-        /*
         if ( currentSplitFilename.length == 1 ) { // if directory
-         // println( currentSplitFilename[0] );
-         // could be extended to recursively open subfolders
-         } 
-         else if ( currentSplitFilename.length == 2 ) { // if file
-         this.CurrentFolder.add( filenames[ i ] );
-         }
-         
-         if ( isOfAllowedFileType( filenames[ i ] ) ) {
-         this.CurrentFolder.add( filenames[ i ] );
-         }
-         
-         
-         */
+          // could be extended to recursively open subfolders
+        } 
+        else if ( currentSplitFilename.length == 2 ) { // if file
+          
+          println( currentSplitFilename[ 1 ] );
+        
+          if ( isOfAllowedFileType( currentSplitFilename[ 1 ] ) ) {
+            this.CurrentFolder.add( filenames[ i ] );
+          }
+        }
       }
     }
   }
-  
-  int findImageIndexFromFilename() {
-    return 1;
+
+  int findImageIndexFromFilename( String filename ) {
+    for (int i = this.CurrentFolder.size()-1; i >= 0; i--) {
+      
+      if ( filename.equals( this.CurrentFolder.get(i) ) ) {
+        return i;
+      }
+    }
+    return 0;
   }
-  
 }
 
