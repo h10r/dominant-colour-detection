@@ -12,8 +12,8 @@ class Button {
   boolean IsCheckable = false;
   boolean IsChecked = false;
 
-  color ButtonForegroundColor = color(255);
-  color ButtonBackgroundColor = color(0);
+  color ButtonForegroundColor = color(0);
+  color ButtonBackgroundColor = color(128);
   color ButtonBackgroundHighlight = color(128);
 
   color ButtonEdgeRoundness = 10;
