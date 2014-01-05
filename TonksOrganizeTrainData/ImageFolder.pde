@@ -40,15 +40,12 @@ class ImageFolder {
   }
 
   void setImagePath( String imagePath ) {
+    
     if ( this.isDirectory( imagePath ) ) {
       this.crawlFolder( imagePath );
-
       this.CurrentImageIndex = 0;
-    } 
-    else {
+    } else {
       String[] splitByFileType = split( imagePath, "." );
-
-      println( splitByFileType[splitByFileType.length-1] );
 
       if ( !this.isOfAllowedFileType( splitByFileType[splitByFileType.length-1] ) ) {
         println( "The file you selected is not an image!" );
@@ -82,11 +79,16 @@ class ImageFolder {
   }
 
   boolean isDirectory( String path ) {
-    println( splitTokens( path, "." ).length );
+    String[] splitPath = splitTokens( path, "." );
     
-    if ( splitTokens( path, "." ).length != 2) {
+    if ( isOfAllowedFileType( splitPath[ splitPath.length - 1 ] ) ) {
+      return false;
+    }
+    
+    if ( splitPath.length != 2) {
       return true;
     }
+        
     return false;
   }
 
@@ -155,10 +157,12 @@ class ImageFolder {
           // could be extended to recursively open subfolders
         } 
         else if ( currentSplitFilename.length == 2 ) { // if file
-          
-          println( currentSplitFilename[ 1 ] );
-        
           if ( isOfAllowedFileType( currentSplitFilename[ 1 ] ) ) {
+            this.CurrentFolder.add( filenames[ i ] );
+          }
+        }
+        else if ( currentSplitFilename.length > 2 ) { // if file
+          if ( isOfAllowedFileType( currentSplitFilename[ currentSplitFilename.length - 1 ] ) ) {
             this.CurrentFolder.add( filenames[ i ] );
           }
         }
