@@ -15,6 +15,10 @@ class Label {
     this.X = x;
     this.Y = y;
   }
+  
+  void setText( String newLabel ) {
+    this.Label = newLabel;
+  }
 
   void display() {
     fill( labelForegroundColor );

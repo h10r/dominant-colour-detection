@@ -2,6 +2,8 @@ PFont f;
 
 TextInput textInput;
 
+Label lblFilename;
+
 ArrayList<Button> buttons;
 ArrayList<Label> labels;
 
@@ -65,6 +67,10 @@ void setupLabels() {
   Label l1 = new Label( "Tag as (comma-separated values):" );
   l1.setPositionAndDimensions( 10, 530 );
   labels.add( l1 );
+  
+  lblFilename = new Label( "No file selected" );
+  lblFilename.setPositionAndDimensions( 300, 530 );
+  labels.add( lblFilename );
 }
 
 void draw() {

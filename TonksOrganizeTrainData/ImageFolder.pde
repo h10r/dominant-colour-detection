@@ -43,7 +43,7 @@ class ImageFolder {
   void setImagePath( String imagePath ) {
     
     if ( this.isDirectory( imagePath ) ) {
-      this.CurrentPath = imagePath;
+      this.CurrentPath = imagePath + "/";
       this.crawlFolder( this.CurrentPath );
       
       this.CurrentImageIndex = 0;
@@ -94,6 +94,8 @@ class ImageFolder {
   void updateImage() {   
     String fullPath = this.CurrentPath + this.CurrentFolder.get( this.CurrentImageIndex );
     
+    lblFilename.setText( this.CurrentFolder.get( this.CurrentImageIndex ) );
+    
     this.CurrentImage = loadImage( fullPath );
      
      this.AspectRatio = float( this.CurrentImage.height ) / float( this.CurrentImage.width );
@@ -122,8 +124,6 @@ class ImageFolder {
     }
 
     this.updateImage();
-
-    println( "previousImage" );
   }
 
   void nextImage() {
@@ -139,8 +139,6 @@ class ImageFolder {
     }
     
     this.updateImage();
-
-    println( "nextImage" );
   }
 
   final String[] allowedFileTypes = { 
