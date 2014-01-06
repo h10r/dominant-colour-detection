@@ -21,20 +21,23 @@ class DatabaseImage
   }
 
   void addOrRemoveColor( String newColor ) {
-    println( this.Colors.indexOf(newColor) );
-
-    if ( this.Colors == "" ) {
-      this.Colors = newColor;
-    } else {
-      this.Colors = this.Colors + "," + newColor;
+    if ( this.Colors.indexOf( newColor + "," ) >= 0 ) {
+      println( "Already knows this!" );
+    } 
+    else {
+      if ( this.Colors == "" ) {
+        this.Colors = newColor;
+      } 
+      else {
+        this.Colors = this.Colors + "," + newColor;
+      }
     }
-    
+
     println( this.Colors );
   }
-  
+
   void setTags( String newTags ) {
     this.Tags = newTags;
   }
-
 }
 

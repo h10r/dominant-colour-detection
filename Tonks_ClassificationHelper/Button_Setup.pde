@@ -2,7 +2,7 @@ final int MENU_LEFT_X = 850;
 final int MENU_LEFT_W = 160;
 
 final int MENU_FIRST_Y = 0;
-final int MENU_OFFSET_Y = 30;
+final int MENU_OFFSET_Y = 32;
 
 final color colorButtonHighlight = color( 207 );
 

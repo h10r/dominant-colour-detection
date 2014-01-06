@@ -24,7 +24,7 @@ KeyHandler keyHandler;
 
 Database database;
 
-DatabaseImage currentImageInDatabase;
+DatabaseImage currentImageInDatabase = new DatabaseImage( "testValue/fuckthis" );;
 
 void setup() {
   size(1024, 600);
