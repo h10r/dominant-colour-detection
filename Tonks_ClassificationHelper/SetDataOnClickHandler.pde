@@ -10,7 +10,18 @@ class SetDataOnClickHandler extends ClickHandler {
   }
 
   void run() {
-    println( "run() SetDataOnClickHandler" );
+    
+    /*
+    if ( currentImageInDatabase == null ) {
+      println( "No image selected - select image! " );
+      return;
+    }
+    */
+    
+    if ( this.Category == "colors" ) {
+      currentImageInDatabase.addOrRemoveColor( this.Value );
+    }
+    
     println( this.Category );
     println( this.Value );
   }  

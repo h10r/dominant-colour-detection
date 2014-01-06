@@ -24,6 +24,8 @@ KeyHandler keyHandler;
 
 Database database;
 
+DatabaseImage currentImageInDatabase;
+
 void setup() {
   size(1024, 600);
 

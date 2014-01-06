@@ -96,6 +96,8 @@ class ImageFolder {
     
     lblFilename.setText( this.CurrentFolder.get( this.CurrentImageIndex ) );
     
+    currentImageInDatabase = new DatabaseImage( fullPath );
+    
     this.CurrentImage = loadImage( fullPath );
      
      this.AspectRatio = float( this.CurrentImage.height ) / float( this.CurrentImage.width );
