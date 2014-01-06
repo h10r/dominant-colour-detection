@@ -2,7 +2,7 @@ final int MENU_LEFT_X = 850;
 final int MENU_LEFT_W = 160;
 
 final int MENU_FIRST_Y = 0;
-final int MENU_OFFSET_Y = 35;
+final int MENU_OFFSET_Y = 30;
 
 final color colorButtonHighlight = color( 207 );
 
@@ -91,6 +91,28 @@ void setupButtons() {
   b12.setBackgroundAndHighlightColors( color(170, 201, 35), colorButtonHighlight );
   b12.setClickHandler( new SetDataOnClickHandler("colors","yellow-green") );
   buttons.add( b12 );
+
+  Button b13 = new Button( "White" );
+  b13.setPositionAndDimensions( MENU_LEFT_X, MENU_FIRST_Y + (13*MENU_OFFSET_Y), MENU_LEFT_W, 30 );
+  b13.setCheckable( true );
+  b13.setBackgroundAndHighlightColors( color(255,255,255), colorButtonHighlight );
+  b13.setClickHandler( new SetDataOnClickHandler("colors","white") );
+  buttons.add( b13 );
+
+  Button b14 = new Button( "Gray" );
+  b14.setPositionAndDimensions( MENU_LEFT_X, MENU_FIRST_Y + (14*MENU_OFFSET_Y), MENU_LEFT_W, 30 );
+  b14.setCheckable( true );
+  b14.setBackgroundAndHighlightColors( color(127,127,127), colorButtonHighlight );
+  b14.setClickHandler( new SetDataOnClickHandler("colors","Gray") );
+  buttons.add( b14 );
+
+  Button b15 = new Button( "Black" );
+  b15.setPositionAndDimensions( MENU_LEFT_X, MENU_FIRST_Y + (15*MENU_OFFSET_Y), MENU_LEFT_W, 30 );
+  b15.setCheckable( true );
+  b15.setButtonForegroundColor( color(255,255,255) );
+  b15.setBackgroundAndHighlightColors( color(0,0,0), colorButtonHighlight );
+  b15.setClickHandler( new SetDataOnClickHandler("colors","black") );
+  buttons.add( b15 );
 
   Button bFolderSelect = new Button( "Select Folder" );
   bFolderSelect.setPositionAndDimensions( MENU_LEFT_X, height - 70, MENU_LEFT_W, 30 );

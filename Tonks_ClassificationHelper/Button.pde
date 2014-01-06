@@ -35,6 +35,10 @@ class Button {
     this.H = h;
   }
 
+  void setButtonForegroundColor( color buttonForegroundColor ) {
+    this.ButtonForegroundColor = buttonForegroundColor;
+  }
+  
   void setBackgroundAndHighlightColors( color buttonCustomBackground, color buttonCustomHighlight ) {
     this.ButtonBackgroundColor = buttonCustomBackground;
     this.ButtonBackgroundHighlight = buttonCustomHighlight;
