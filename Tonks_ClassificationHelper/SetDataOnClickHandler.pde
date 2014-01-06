@@ -9,8 +9,7 @@ class SetDataOnClickHandler extends ClickHandler {
     this.Value = value;
   }
 
-  void run() {
-    
+  void run() {    
     /*
     if ( currentImageInDatabase == null ) {
       println( "No image selected - select image! " );
@@ -20,10 +19,8 @@ class SetDataOnClickHandler extends ClickHandler {
     
     if ( this.Category == "colors" ) {
       currentImageInDatabase.addOrRemoveColor( this.Value );
+      println( currentImageInDatabase.Colors );
     }
-    
-    println( this.Category );
-    println( this.Value );
   }  
 }
 

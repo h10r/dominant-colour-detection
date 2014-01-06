@@ -12,30 +12,40 @@ class DatabaseImage
 {
   public String Filename;
   public String Colors;
+  public StringList ColorsList;
+ 
   public String Tags;
 
   public DatabaseImage( String newFilename ) {
     this.Filename = newFilename;
     this.Colors = "";
     this.Tags = "";
+    
+    this.ColorsList = new StringList();
   }
 
   void addOrRemoveColor( String newColor ) {
-    if ( this.Colors.indexOf( newColor + "," ) >= 0 ) {
-      println( "Already knows this!" );
-    } 
-    else {
-      if ( this.Colors == "" ) {
-        this.Colors = newColor;
-      } 
-      else {
-        this.Colors = this.Colors + "," + newColor;
+    if ( this.ColorsList.hasValue( newColor ) == true ) {
+      for ( int i = 0; i < this.ColorsList.size(); i++ ) {
+        if ( this.ColorsList.get(i) == newColor ) {
+          this.ColorsList.remove( i );
+        }
       }
+    } else {
+      this.ColorsList.append( newColor );
     }
 
-    println( this.Colors );
+    this.updateFormattedString();
   }
 
+  void updateFormattedString() {
+    this.Colors = "";
+    
+    for ( int i = 0; i < this.ColorsList.size(); i++ ) {
+      this.Colors = this.Colors + this.ColorsList.get(i) + ",";
+    }
+  }
+  
   void setTags( String newTags ) {
     this.Tags = newTags;
   }

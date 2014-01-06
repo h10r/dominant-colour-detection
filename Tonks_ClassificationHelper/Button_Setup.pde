@@ -103,7 +103,7 @@ void setupButtons() {
   b14.setPositionAndDimensions( MENU_LEFT_X, MENU_FIRST_Y + (14*MENU_OFFSET_Y), MENU_LEFT_W, 30 );
   b14.setCheckable( true );
   b14.setBackgroundAndHighlightColors( color(127,127,127), colorButtonHighlight );
-  b14.setClickHandler( new SetDataOnClickHandler("colors","Gray") );
+  b14.setClickHandler( new SetDataOnClickHandler("colors","gray") );
   buttons.add( b14 );
 
   Button b15 = new Button( "Black" );
