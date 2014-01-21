@@ -10,6 +10,11 @@ Tags
 --------------
 Colors, Classification, Image Tagging, Data Sets, Pattern Recognition, Machine Learning, Processing, Graphical User Interfaces, ClickHandler, FileReader, TextArea, Buttons, SQLite.
 
+Screenshot
+--------------
+
+![Screenshot of Tonks Classification Helper](/data/screenshot.png "Screenshot of Tonks Classification Helper")
+
 Motivation
 --------------
 
