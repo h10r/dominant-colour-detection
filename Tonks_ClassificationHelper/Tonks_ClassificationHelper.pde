@@ -17,8 +17,9 @@ Label lblFilename;
 ArrayList<Button> buttons;
 ArrayList<Label> labels;
 
-FolderPicker folderPicker;
 ImageFolder imageFolder;
+FolderPicker folderPickerClickHandler;
+SaveRowInDatabase saveRowInDatabaseClickHandler;
 
 KeyHandler keyHandler;
 
@@ -42,7 +43,8 @@ void setup() {
   
   // float imageRation =  this.H / this.W;
   
-  folderPicker = new FolderPicker( imageFolder );
+  folderPickerClickHandler = new FolderPicker( imageFolder );
+  saveRowInDatabaseClickHandler = new SaveRowInDatabase();
 
   labels = new ArrayList<Label>();
   setupLabels();  
@@ -123,6 +125,6 @@ void keyPressed() {
 }
 
 void folderSelected(File selection) {
-  folderPicker.folderSelected( selection );
+  folderPickerClickHandler.folderSelected( selection );
 }
 
