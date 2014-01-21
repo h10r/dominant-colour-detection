@@ -1,6 +1,6 @@
 /*
 *
-* Tonks Classificiation Helper
+* Image Classification Tool
 *
 * Hendrik Heuer, 2014
 *
@@ -25,7 +25,7 @@ KeyHandler keyHandler;
 
 Database database;
 
-DatabaseImage currentImageInDatabase = new DatabaseImage( "testValue/fuckthis" );;
+DatabaseImage currentImageInDatabase = new DatabaseImage( "" );
 
 void setup() {
   size(1024, 600);
