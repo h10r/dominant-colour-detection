@@ -16,10 +16,10 @@ UPDATE_PLOTS = True
 
 SAVE_TO_FILE = True
 
-print("tonks: Generate from folder: STARTED")
+print("Generate from folder: STARTED")
 
 def read_images_in_folder( path ):
-	print("tonks: Reading folder: " + path)
+	print("Reading folder: " + path)
 
 	label = path.split("/")[-2]
 	parent_folder = os.listdir( path )
@@ -48,12 +48,12 @@ def read_images_in_folder( path ):
 							images[dir_item_and_label] = [ new_image ]
 
 					except Exception:
-						print("tonks: ERROR reading " + full_path + "/" + file_in_dir)
+						print("ERROR reading " + full_path + "/" + file_in_dir)
 	
 	if (len( images ) > 0):
 		return( images )
 	else:
-		print("tonks: ERROR reading " + path)
+		print("ERROR reading " + path)
 		return(False)
 
 def calculate_histograms( images ):
@@ -76,7 +76,7 @@ def draw_all_histograms( folder_with_histograms ):
 		draw_histogram( folder_with_histograms[ label ][0], folder_with_histograms[ label ][1], label )
 
 def draw_histogram( histograms, bin_edges, label ):
-	print("tonks: draw_histogram: " + label)
+	print("draw_histogram: " + label)
 	
 	for hist in histograms:
 		plt.bar(bin_edges[:-1], hist, width = 1, alpha = ALPHA_BANDS)
@@ -92,15 +92,15 @@ def draw_histogram( histograms, bin_edges, label ):
 
 #### HELPER FUNCTIONS ####
 
-def read_tonks_data_from_disk():
+def read_data_from_disk():
 	try:
-		return pickle.load(open("data/tonks.dat", "rb"))
+		return pickle.load(open("data/classify.dat", "rb"))
 	except:
 		return False
 
-def write_tonks_data_to_disk( tonks_data ):
-	print("tonks: Save data to disk")
-	pickle.dump( tonks_data, open("data/tonks.dat", "wb"))
+def write_data_to_disk( classify_data ):
+	print("Save data to disk")
+	pickle.dump( classify_data, open("data/classify.dat", "wb"))
 	
 def read_image_from_path( image ):
 	img = mh.imread( image )
@@ -131,17 +131,17 @@ def generate_random_data(N):
 
 def main(folder):
 	if not GENERATE_FILES:
-		dict_of_histograms = read_tonks_data_from_disk() # False
+		dict_of_histograms = read_data_from_disk() # False
 	else:
 		dict_of_histograms = False
 
 	if dict_of_histograms:
-		print("tonks: Loaded histograms")
+		print("Loaded histograms")
 		# print( dict_of_histograms )
 	else:
 		all_images = read_images_in_folder( folder )		
 		dict_of_histograms = calculate_histograms( all_images )
-		write_tonks_data_to_disk( dict_of_histograms )
+		write_data_to_disk( dict_of_histograms )
 
 	if UPDATE_PLOTS:
 		draw_all_histograms( dict_of_histograms )

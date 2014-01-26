@@ -18,6 +18,18 @@ import pylab as pl
 
 from sklearn import linear_model
 
+import sqlite3
+
+PATH_OF_DATABASE = "data/mcgill_plus_hendrik.db"
+
+database = sqlite3.connect( PATH_OF_DATABASE )
+
+c = database.cursor()
+c.execute('SELECT * FROM images')
+
+images_in_database = c.fetchall()
+
+print( images_in_database[0] )
 
 FILE_PATH = "../photos/hendrik"
 
@@ -31,7 +43,7 @@ color_names = []
 
 clf = linear_model.LogisticRegression(C=1e5)
 
-print("tonks: Build classifier: STARTED")
+print("Build classifier: STARTED")
 
 #### CLASSES ####
 
@@ -47,15 +59,15 @@ class Histogram():
 
 #### HELPER FUNCTIONS ####
 
-def read_tonks_data_from_disk():
+def read_data_from_disk():
 	try:
-		return pickle.load(open("data/tonks.dat", "rb"))
+		return pickle.load(open("data/classify.dat", "rb"))
 	except:
 		return False
 
-def write_tonks_data_to_disk( tonks_data ):
-	print("tonks: Save data to disk")
-	pickle.dump( tonks_data, open("data/tonks.dat", "wb"))
+def write_data_to_disk( data ):
+	print("Save data to disk")
+	pickle.dump( data, open("data/classify.dat", "wb"))
 	
 #### MAIN ####
 
@@ -110,13 +122,13 @@ def direct_test():
 def main():
 	global color_names
 
-	dict_of_histograms = read_tonks_data_from_disk() # False
+	dict_of_histograms = read_data_from_disk() # False
 
 	X = []
 	Y = []
 
 	if dict_of_histograms:
-		print("tonks: Loaded histograms")
+		print("Loaded histograms")
 
 		color_class_id = 0
 
@@ -146,7 +158,7 @@ def main():
 
 	
 	else:
-		print("tonks: ERROR: couldn't find histograms - Regenerate?")
+		print("ERROR: couldn't find histograms - Regenerate?")
 
 
 if __name__ == "__main__":
