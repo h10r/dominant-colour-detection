@@ -8,16 +8,50 @@ import mahotas as mh
 import matplotlib.pyplot as plt
 import pickle
 
+import sqlite3
+
+PATH_OF_DATABASE = "data/mcgill_plus_hendrik.db"
+
+USE_DATABASE = True
+
 HIST_BANDS = 128
 ALPHA_BANDS = 0.1
 
-GENERATE_FILES = False
+GENERATE_FILES = True
 UPDATE_PLOTS = True
 
 SAVE_TO_FILE = True
 
-print("Generate from folder: STARTED")
+def read_images_from_database():
+	database = sqlite3.connect( PATH_OF_DATABASE )
 
+	c = database.cursor()
+	#c.execute('SELECT * FROM images LIMIT 0,10')
+	c.execute('SELECT * FROM images')
+
+	images_in_database = c.fetchall()
+	
+	images = {}
+
+	for db_img in images_in_database:
+		nr,filename,colors,tags = db_img
+
+		for color in colors.split(","):
+			if ( len(color) > 0 ):
+
+				mh_image = read_image_from_path( filename )
+
+				if( color in images ):
+					images[color].append( mh_image ) 
+				else:
+					images[color] = [ mh_image ]
+
+	if (len( images ) > 0):
+		return( images )
+	else:
+		print("ERROR reading from database")
+		return(False)
+		
 def read_images_in_folder( path ):
 	print("Reading folder: " + path)
 
@@ -26,7 +60,7 @@ def read_images_in_folder( path ):
 
 	images = {}
 
-	for dir_item_and_label in parent_folder: # [0:2]
+	for dir_item_and_label in parent_folder:
 		
 		if path.endswith("/"):
 			full_path = path + dir_item_and_label
@@ -37,7 +71,7 @@ def read_images_in_folder( path ):
 		if os.path.isdir( full_path ):
 			dirs = os.listdir( full_path )
 			
-			for file_in_dir in dirs: # [0:4] - @TODO remove the 6 file limit!
+			for file_in_dir in dirs:
 				if file_in_dir.endswith(".jpg"):
 					try:
 						new_image = read_image_from_path( full_path + "/" + file_in_dir )
@@ -55,6 +89,7 @@ def read_images_in_folder( path ):
 	else:
 		print("ERROR reading " + path)
 		return(False)
+
 
 def calculate_histograms( images ):
 	hist_and_bin_edges = {}
@@ -94,13 +129,13 @@ def draw_histogram( histograms, bin_edges, label ):
 
 def read_data_from_disk():
 	try:
-		return pickle.load(open("data/classify.dat", "rb"))
+		return pickle.load(open("data/pickle.bin", "rb"))
 	except:
 		return False
 
 def write_data_to_disk( classify_data ):
 	print("Save data to disk")
-	pickle.dump( classify_data, open("data/classify.dat", "wb"))
+	pickle.dump( classify_data, open("data/pickle.bin", "wb"))
 	
 def read_image_from_path( image ):
 	img = mh.imread( image )
@@ -129,9 +164,9 @@ def generate_random_data(N):
 
 #### MAIN ####
 
-def main(folder):
+def main():
 	if not GENERATE_FILES:
-		dict_of_histograms = read_data_from_disk() # False
+		dict_of_histograms = read_data_from_disk()
 	else:
 		dict_of_histograms = False
 
@@ -139,7 +174,11 @@ def main(folder):
 		print("Loaded histograms")
 		# print( dict_of_histograms )
 	else:
-		all_images = read_images_in_folder( folder )		
+		if USE_DATABASE:
+			all_images = read_images_from_database()
+		else:
+			all_images = read_images_in_folder( "../photos/hendrik" )
+
 		dict_of_histograms = calculate_histograms( all_images )
 		write_data_to_disk( dict_of_histograms )
 
@@ -147,5 +186,5 @@ def main(folder):
 		draw_all_histograms( dict_of_histograms )
 
 if __name__ == "__main__":
-	main(sys.argv[1])
+	main()
 

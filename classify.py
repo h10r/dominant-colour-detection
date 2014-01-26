@@ -18,19 +18,6 @@ import pylab as pl
 
 from sklearn import linear_model
 
-import sqlite3
-
-PATH_OF_DATABASE = "data/mcgill_plus_hendrik.db"
-
-database = sqlite3.connect( PATH_OF_DATABASE )
-
-c = database.cursor()
-c.execute('SELECT * FROM images')
-
-images_in_database = c.fetchall()
-
-print( images_in_database[0] )
-
 FILE_PATH = "../photos/hendrik"
 
 HIST_BANDS = 128
@@ -61,13 +48,13 @@ class Histogram():
 
 def read_data_from_disk():
 	try:
-		return pickle.load(open("data/classify.dat", "rb"))
+		return pickle.load(open("data/pickle.bin", "rb"))
 	except:
 		return False
 
 def write_data_to_disk( data ):
 	print("Save data to disk")
-	pickle.dump( data, open("data/classify.dat", "wb"))
+	pickle.dump( data, open("data/pickle.bin", "wb"))
 	
 #### MAIN ####
 
@@ -164,4 +151,3 @@ def main():
 if __name__ == "__main__":
 	main()
 	pass 
-
