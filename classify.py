@@ -22,6 +22,9 @@ FILE_PATH = "../photos/hendrik"
 
 HIST_BANDS = 128
 ALPHA_BANDS = 0.1
+
+GENERATE_FILES = True
+
 SAVE_TO_FILE = True
 
 h = .02
@@ -46,15 +49,21 @@ class Histogram():
 
 #### HELPER FUNCTIONS ####
 
-def read_data_from_disk():
+def load_histograms_from_disk():
 	try:
-		return pickle.load(open("data/pickle.bin", "rb"))
+		return pickle.load(open("data/dict_of_histograms.bin", "rb"))
 	except:
 		return False
 
-def write_data_to_disk( data ):
-	print("Save data to disk")
-	pickle.dump( data, open("data/pickle.bin", "wb"))
+def load_classifier_from_disk():
+	try:
+		return pickle.load(open("data/classifier.bin", "rb"))
+	except:
+		return False
+
+def write_classifier_to_disk( data ):
+	print("Save classifier to disk")
+	pickle.dump( data, open("data/classifier.bin", "wb"))
 	
 #### MAIN ####
 
@@ -106,10 +115,8 @@ def direct_test():
 			print( color + "\t" + str(int(100*percentage)).zfill(2) + "%" )
 		print()
 
-def main():
-	global color_names
-
-	dict_of_histograms = read_data_from_disk() # False
+def generate_and_return_classifier():
+	dict_of_histograms = load_histograms_from_disk() # False
 
 	X = []
 	Y = []
@@ -141,12 +148,23 @@ def main():
 
 		clf.fit( X, Y )
 
-		direct_test()
-
+		return clf
+	return False
 	
-	else:
-		print("ERROR: couldn't find histograms - Regenerate?")
 
+def main():
+	global color_names
+
+	if GENERATE_FILES:
+		clf = generate_and_return_classifier()
+		write_classifier_to_disk( clf )
+	else:
+		clf = load_classifier_from_disk()
+	
+	if clf:
+		direct_test()
+	else:
+		print("ERROR: couldn't find classifier")
 
 if __name__ == "__main__":
 	main()
