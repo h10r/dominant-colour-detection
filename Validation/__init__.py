@@ -1,7 +1,7 @@
 import glob
 from operator import itemgetter
 
-class Test():
+class Validation():
 
 	FILE_PATH = "../photos/hendrik"
 
@@ -14,7 +14,7 @@ class Test():
 	def cross_validation(self):
 		print("cross_validation")
 
-	def test_with_selected_files(self):
+	def validate_with_selected_files(self):
 		test_files = glob.glob( self.FILE_PATH + "/test/*" )
 
 		for test_file in test_files:

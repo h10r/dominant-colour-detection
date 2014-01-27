@@ -3,16 +3,17 @@
 from Features import *
 from Database import *
 from Classifier import *
-from Test import *
+from Validation import *
 
 if __name__ == "__main__":
 	f = Features()
+	d = Database( f )
+	
 	"""
 	c = Classifier( f )
 
-	t = Test(f, c)
+	v = Validation(f, c)
 	"""
-	d = Database( f )
 	print( d.db )
 
 """
