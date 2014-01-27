@@ -32,7 +32,7 @@ class Validation():
 
 		#cross_validation.cross_val_score( self.classifier.clf, self.classifier.X, self.classifier.Y, cv=5, scoring='f1' )
 
-		X_train, X_test, y_train, y_test = cross_validation.train_test_split( self.classifier.X,self.classifier.Y, test_size=0.4, random_state=0 )
+		X_train, X_test, y_train, y_test = cross_validation.train_test_split( self.classifier.X,self.classifier.Y, test_size=0.3, random_state=0 )
 
 		print( X_train.shape )
 		print( y_train.shape )
