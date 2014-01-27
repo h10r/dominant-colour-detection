@@ -20,9 +20,9 @@ class Database():
 		for db_img in images_in_database:
 			nr,filename,colors,tags = db_img
 			
-			self.save_histograms_based_on_color( filename,colors )
+			self.generate_histograms_from_filename_and_categorize_by_color( filename,colors )
 
-	def save_histograms_based_on_color( self,filename,colors ):
+	def generate_histograms_from_filename_and_categorize_by_color( self,filename,colors ):
 		for color in colors.split(","):
 			if ( len(color) > 0 ):
 				histogram = self.features.histogram_from_filename( filename )
