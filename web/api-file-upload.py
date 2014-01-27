@@ -1,59 +1,53 @@
-#!/opt/local/bin/python3.3
-
 import os
-# We'll render HTML templates and access data sent by POST
-# using the request object from flask. Redirect and url_for
-# will be used to redirect the user once the upload is done
-# and send_from_directory will help us to send/show on the
-# browser the file that the user just uploaded
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+from flask import Flask, request, redirect, url_for
 from werkzeug import secure_filename
-
-# Initialize the Flask application
+ 
+UPLOAD_FOLDER = '.'
+ALLOWED_EXTENSIONS = set(['gif','jpeg','jpg','png'])
+ 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# This is the path to the upload directory
-app.config['UPLOAD_FOLDER'] = 'uploads/'
-# These are the extension that we are accepting to be uploaded
-app.config['ALLOWED_EXTENSIONS'] = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+from sklearn import linear_model
 
-# For a given file, return whether it's an allowed type or not
+def load_classifier_from_disk():
+    try:
+        return pickle.load(open("../data/classifier.bin", "rb"))
+    except:
+        return False
+
+clf = load_classifier_from_disk()
+
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+ 
+@app.route('/info/')
+def info():
+    return """
+    <!doctype html>
+    <title>Info</title>
+    <h1>Info</h1>
+    <p>Whatever</p>
+    """
 
-# This route will show a form to perform an AJAX request
-# jQuery is loaded to execute the request and update the
-# value of the operation
-@app.route('/')
+@app.route("/", methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
-
-# Route that will process the file upload
-@app.route('/upload', methods=['POST'])
-def upload():
-    # Get the name of the uploaded file
-    file = request.files['file']
-    # Check if the file is one of the allowed types/extensions
-    if file and allowed_file(file.filename):
-        # Make the filename safe, remove unsupported chars
-        filename = secure_filename(file.filename)
-        # Move the file form the temporal folder to
-        # the upload folder we setup
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        # Redirect the user to the uploaded_file route, which
-        # will basicaly show on the browser the uploaded file
-        return redirect(url_for('uploaded_file',
-                                filename=filename))
-
-# This route is expecting a parameter containing the name
-# of a file. Then it will locate that file on the upload
-# directory and show it on the browser, so if the user uploads
-# an image, that image is going to be show after the upload
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'],
-                               filename)
-
-if __name__ == '__main__':
-    app.run()
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('info'))
+    return """
+    <!doctype html>
+    <title>Upload new File</title>
+    <h1>Upload new File</h1>
+      <p><input type=file name=file>
+         <input type=submit value=Upload>
+    </form>
+    <p>%s</p>
+    """ % "<br>".join(os.listdir(app.config['UPLOAD_FOLDER'],))
+ 
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5001, debug=True)
