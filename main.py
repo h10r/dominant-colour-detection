@@ -1,11 +1,15 @@
 #!/opt/local/bin/python3.3
 
-import Histogram
-import Classifier
-import Test
+from Histogram import *
+from Classifier import *
+from Test import *
 
 if __name__ == "__main__":
-    Test()
+	h = Histogram()
+	c = Classifier( h )
+
+	t = Test(h, c)
+
 
 """
 import os

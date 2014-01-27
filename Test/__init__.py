@@ -1,25 +1,31 @@
+import glob
+from operator import itemgetter
+
 class Test():
 
-	def __init__(self, clf):
-		self.clf = clf
+	FILE_PATH = "../photos/hendrik"
+
+	def __init__(self, histogram, classifier):
+		self.histogram = histogram
+		self.classifier = classifier
 
 		self.test_with_selected_files()
 
-	def test_with_selected_files():
-		test_files = glob.glob( FILE_PATH + "/test/*" )
+	def test_with_selected_files(self):
+		test_files = glob.glob( self.FILE_PATH + "/test/*" )
 
 		for test_file in test_files:
-			h = Histogram.get_histogram_from_image( test_file )
+			h = self.histogram.from_filename( test_file )
 			
-			clf_predict = clf.predict_proba( h )
+			clf_prediction = self.classifier.clf.predict_proba( h )
 
 			unsorted_predictions = []
 
 			print("* " + test_file.split("/")[-1] )
-			for p in clf_predict:
+			for p in clf_prediction:
 				for i in range(len(p)):
 					if p[i] > 0.0:
-						unsorted_predictions.append( [ self.clf.colorname_by_index(i), p[i] ] )
+						unsorted_predictions.append( [ self.classifier.colorname_by_index(i), p[i] ] )
 			
 			sorted_predictions = sorted( unsorted_predictions, key=itemgetter(1), reverse=True)
 

@@ -6,6 +6,7 @@ import numpy as np
 from sklearn import linear_model
 
 class Classifier():
+	H = .02
 
 	def __init__(self, histogram):
 		self.clf = linear_model.LogisticRegression(C=1e5)
@@ -20,18 +21,17 @@ class Classifier():
 		self.color_names = []
 
 		if histograms_from_disk:
-			self.X,self.Y = self.generate( histograms_from_disk )
+			self.generate( histograms_from_disk )
 
 			self.clf.fit( self.X,self.Y )
 		else:
 			print("Error while initializing Classifier")
-			return False
 
 	def generate(self, dict_of_histograms):
 		color_class_id = 0
 
 		for key in dict_of_histograms.keys():			
-			color_names.append( key )
+			self.color_names.append( key )
 
 			hists, bin_edges = dict_of_histograms[key]
 
@@ -40,17 +40,15 @@ class Classifier():
 				if not np.all( np.isfinite( hist ) ):
 					pass
 				else:
-					X.append( hist )
-					Y.append( [color_class_id] )
+					self.X.append( hist )
+					self.Y.append( [color_class_id] )
 				
 			color_class_id = color_class_id + 1
 
-		X = np.asarray( X , dtype=np.float64 )
-		Y = np.asarray( Y , dtype=np.float64 )
+		self.X = np.asarray( self.X , dtype=np.float64 )
+		self.Y = np.asarray( self.Y , dtype=np.float64 )
 
-		Y = np.ravel( Y )
-
-		return X,Y
+		self.Y = np.ravel( self.Y )
 
 	def colorname_by_index( self, index ):
 		return self.color_names[ index ]
@@ -64,7 +62,7 @@ class Classifier():
 	def plot():
 		x_min, x_max = X[:, 0].min() - .5, X[:, 0].max() + .5
 		y_min, y_max = X[:, 1].min() - .5, X[:, 1].max() + .5
-		xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
+		xx, yy = np.meshgrid(np.arange(x_min, x_max, self.H), np.arange(y_min, y_max, self.H))
 		Z = logreg.predict(np.c_[xx.ravel(), yy.ravel()])
 
 		# Put the result into a color plot
