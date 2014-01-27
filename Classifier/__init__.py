@@ -8,12 +8,12 @@ from sklearn import linear_model
 class Classifier():
 	H = .02
 
-	def __init__(self, histogram):
+	def __init__(self, features):
 		self.clf = linear_model.LogisticRegression(C=1e5)
 
-		self.histogram = histogram
+		self.features = features
 
-		histograms_from_disk = self.histogram.load_from_disk()
+		histograms_from_disk = self.features.load_from_disk()
 
 		self.X = []
 		self.Y = []
@@ -57,5 +57,5 @@ class Classifier():
 		return self.clf.predict_proba( histogram )
 	
 	def predict_from_filename(self, filename):
-		return self.predict_from_histogram( self.histogram.from_filename( filename ) )
+		return self.predict_from_histogram( self.features.histogram_from_filename( filename ) )
 

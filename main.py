@@ -1,19 +1,19 @@
 #!/opt/local/bin/python3.3
 
+from Features import *
 from Database import *
-from Histogram import *
 from Classifier import *
 from Test import *
 
 if __name__ == "__main__":
+	f = Features()
 	"""
-	h = Histogram()
-	c = Classifier( h )
+	c = Classifier( f )
 
-	t = Test(h, c)
+	t = Test(f, c)
 	"""
-	d = Database()
-	print( d.fetch_all() )
+	d = Database( f )
+	print( d.db )
 
 """
 def main():

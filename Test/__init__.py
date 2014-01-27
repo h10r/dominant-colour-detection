@@ -5,8 +5,8 @@ class Test():
 
 	FILE_PATH = "../photos/hendrik"
 
-	def __init__(self, histogram, classifier):
-		self.histogram = histogram
+	def __init__(self, features, classifier):
+		self.features = features
 		self.classifier = classifier
 
 		self.cross_validation()
@@ -14,13 +14,11 @@ class Test():
 	def cross_validation(self):
 		print("cross_validation")
 
-		
-
 	def test_with_selected_files(self):
 		test_files = glob.glob( self.FILE_PATH + "/test/*" )
 
 		for test_file in test_files:
-			h = self.histogram.from_filename( test_file )
+			h = self.features.histogram_from_filename( test_file )
 			
 			clf_prediction = self.classifier.clf.predict_proba( h )
 

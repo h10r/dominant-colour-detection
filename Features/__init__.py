@@ -2,10 +2,10 @@ import pickle
 import mahotas as mh
 import numpy as np    
 
-class Histogram():
+class Features():
 	HIST_BANDS = 128
 
-	def from_filename(self, filename):
+	def histogram_from_filename(self, filename):
 		img = mh.imread( filename )
 
 		hist, bin_edges = np.histogram( img, bins = range(self.HIST_BANDS), normed=True)
@@ -13,7 +13,7 @@ class Histogram():
 
 		return hist
 
-	def load_from_disk(self):
+	def load_histograms_from_disk(self):
 		try:
 			return pickle.load(open("data/dict_of_histograms.bin", "rb"))
 		except:
