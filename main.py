@@ -1,15 +1,19 @@
 #!/opt/local/bin/python3.3
 
+from Database import *
 from Histogram import *
 from Classifier import *
 from Test import *
 
 if __name__ == "__main__":
+	"""
 	h = Histogram()
 	c = Classifier( h )
-	c.plot()
 
-	#t = Test(h, c)
+	t = Test(h, c)
+	"""
+	d = Database()
+	print( d.fetch_all() )
 
 """
 def main():

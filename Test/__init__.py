@@ -9,7 +9,12 @@ class Test():
 		self.histogram = histogram
 		self.classifier = classifier
 
-		self.test_with_selected_files()
+		self.cross_validation()
+
+	def cross_validation(self):
+		print("cross_validation")
+
+		
 
 	def test_with_selected_files(self):
 		test_files = glob.glob( self.FILE_PATH + "/test/*" )
