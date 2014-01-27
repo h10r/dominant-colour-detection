@@ -13,7 +13,7 @@ class Classifier():
 
 		self.features = features
 
-		histograms_from_disk = self.features.load_from_disk()
+		histograms_from_disk = self.features.load_histograms_from_disk()
 
 		self.X = []
 		self.Y = []
@@ -22,8 +22,6 @@ class Classifier():
 
 		if histograms_from_disk:
 			self.generate( histograms_from_disk )
-
-			self.clf.fit( self.X,self.Y )
 		else:
 			print("Error while initializing Classifier")
 
