@@ -20,7 +20,6 @@ from sklearn import linear_model
 
 FILE_PATH = "../photos/hendrik"
 
-HIST_BANDS = 128
 ALPHA_BANDS = 0.1
 
 GENERATE_FILES = True
@@ -32,63 +31,9 @@ h = .02
 color_names = []
 
 clf = linear_model.LogisticRegression(C=1e5)
-
-print("Build classifier: STARTED")
-
-#### CLASSES ####
-
-class Histogram():
-
-	def get_histogram_from_image( image_path ):
-		img = mh.imread( image_path )
-
-		hist, bin_edges = np.histogram( img, bins = range(HIST_BANDS), normed=True)
-		hist = hist.clip(0.0,0.1)
-
-		return hist
-
-#### HELPER FUNCTIONS ####
-
-def load_histograms_from_disk():
-	try:
-		return pickle.load(open("data/dict_of_histograms.bin", "rb"))
-	except:
-		return False
-
-def load_classifier_from_disk():
-	try:
-		return pickle.load(open("data/classifier.bin", "rb"))
-	except:
-		return False
-
-def write_classifier_to_disk( data ):
-	print("Save classifier to disk")
-	pickle.dump( data, open("data/classifier.bin", "wb"))
 	
 #### MAIN ####
 
-def plot_clf():
-	x_min, x_max = X[:, 0].min() - .5, X[:, 0].max() + .5
-	y_min, y_max = X[:, 1].min() - .5, X[:, 1].max() + .5
-	xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
-	Z = logreg.predict(np.c_[xx.ravel(), yy.ravel()])
-
-	# Put the result into a color plot
-	Z = Z.reshape(xx.shape)
-	pl.figure(1, figsize=(4, 3))
-	pl.pcolormesh(xx, yy, Z, cmap=pl.cm.Paired)
-
-	# Plot also the training points
-	pl.scatter(X[:, 0], X[:, 1], c=Y, edgecolors='k', cmap=pl.cm.Paired)
-	pl.xlabel('Sepal length')
-	pl.ylabel('Sepal width')
-
-	pl.xlim(xx.min(), xx.max())
-	pl.ylim(yy.min(), yy.max())
-	pl.xticks(())
-	pl.yticks(())
-
-	pl.show()
 
 def direct_test():
 	global color_names
