@@ -18,3 +18,24 @@ class Histogram():
 			return pickle.load(open("data/dict_of_histograms.bin", "rb"))
 		except:
 			return False
+
+	"""
+	def draw_all_histograms( folder_with_histograms ):
+		for label in folder_with_histograms.keys():
+			draw_histogram( folder_with_histograms[ label ][0], folder_with_histograms[ label ][1], label )
+
+	def draw_histogram( histograms, bin_edges, label ):
+		print("draw_histogram: " + label)
+		
+		for hist in histograms:
+			plt.bar(bin_edges[:-1], hist, width = 1, alpha = ALPHA_BANDS)
+
+		plt.xlim( min( bin_edges ), max( bin_edges ) )
+
+		if SAVE_TO_FILE:
+			plt.savefig("plots/" + label + ".png")
+			plt.clf()
+		else:
+			plt.show()
+			plt.clf()
+	"""

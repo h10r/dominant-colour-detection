@@ -59,9 +59,9 @@ class Classifier():
 	def predict_from_filename(self, filename):
 		return self.predict_from_histogram( self.histogram.from_filename( filename ) )
 
-	def plot():
-		x_min, x_max = X[:, 0].min() - .5, X[:, 0].max() + .5
-		y_min, y_max = X[:, 1].min() - .5, X[:, 1].max() + .5
+	def plot(self):
+		x_min, x_max = self.X[:, 0].min() - .5, self.X[:, 0].max() + .5
+		y_min, y_max = self.X[:, 1].min() - .5, self.X[:, 1].max() + .5
 		xx, yy = np.meshgrid(np.arange(x_min, x_max, self.H), np.arange(y_min, y_max, self.H))
 		Z = logreg.predict(np.c_[xx.ravel(), yy.ravel()])
 
@@ -71,7 +71,7 @@ class Classifier():
 		pl.pcolormesh(xx, yy, Z, cmap=pl.cm.Paired)
 
 		# Plot also the training points
-		pl.scatter(X[:, 0], X[:, 1], c=Y, edgecolors='k', cmap=pl.cm.Paired)
+		pl.scatter(self.X[:, 0], self.X[:, 1], c=Y, edgecolors='k', cmap=pl.cm.Paired)
 		pl.xlabel('Sepal length')
 		pl.ylabel('Sepal width')
 
