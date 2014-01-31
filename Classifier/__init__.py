@@ -54,7 +54,7 @@ class Classifier():
 		X_train, X_test, y_train, y_test = cross_validation.train_test_split( self.classifier.X,self.classifier.Y, test_size=0.3, random_state=0 )
 
 		print( "SVC: " )
-		clf = SVC(gamma=0.001).fit(X_train, y_train)
+		clf = SVC().fit(X_train, y_train)
 		print( clf.score(X_test, y_test) )
 
 		print( "LogisticRegression: " )

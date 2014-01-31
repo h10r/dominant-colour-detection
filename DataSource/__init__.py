@@ -8,19 +8,20 @@ import numpy as np
 class DataSource():
 	HIST_BANDS = 128
 
-	PATH_TO_DATA_SOURCE = "data/clothes.csv"
+	#PATH_TO_DATA_SOURCE = "data/clothes.csv"
+	PATH_TO_DATA_SOURCE = "data/clothes_test.csv"
 	PATH_TO_SOURCE_FILES = "../photos/zalando/"
 
 	USE_CACHED_VERSION = True
 
 	def __init__(self):
 
-		if USE_CACHED_VERSION:
+		if self.USE_CACHED_VERSION:
 			self.db = self.load_db_from_cache()
 		else:
 			self.db = {}
 			self.load_from_csv()
-
+			self.save_db_to_cache()
 
 	def histogram_from_filename(self, filename):
 		img = mh.imread( filename )
@@ -36,9 +37,9 @@ class DataSource():
 		except:
 			return False
 	
-	def save_db_to_cache(self, database):
+	def save_db_to_cache(self):
 		try:
-			return pickle.load(open("data/cached_db.bin", "rb"))
+			return pickle.dump( self.db, open( "data/cached_db.bin", "wb" ) )
 		except:
 			return False
 
