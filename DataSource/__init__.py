@@ -9,14 +9,11 @@ class DataSource():
 	HIST_BANDS = 128
 
 	USE_CACHED_VERSION = False
-	USE_SMALL_TEST_SET = False
-
+	
 	PATH_TO_SOURCE_FILES = "../photos/zalando/"
 
-	if USE_SMALL_TEST_SET:
-		PATH_TO_DATA_SOURCE = "data/clothes.csv"
-	else:
-		PATH_TO_DATA_SOURCE = "data/clothes_test.csv"
+	#PATH_TO_DATA_SOURCE = "data/clothes_test.csv"
+	PATH_TO_DATA_SOURCE = "data/clothes.csv"
 
 	def __init__(self):
 
