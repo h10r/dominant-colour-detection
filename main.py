@@ -5,4 +5,4 @@ from Classifier import Classifier
 
 if __name__ == "__main__":
 	d = DataSource()
-	#c = Classifier( d )
+	c = Classifier( d )

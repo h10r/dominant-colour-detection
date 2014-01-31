@@ -31,7 +31,7 @@ class Classifier():
 		for key in dict_of_histograms.keys():			
 			self.color_names.append( key )
 
-			hists, bin_edges = dict_of_histograms[key]
+			hists = dict_of_histograms[key]
 
 			for hist in hists:
 				
@@ -51,7 +51,7 @@ class Classifier():
 	def cross_validation(self):
 		print("** cross_validation start")
 
-		X_train, X_test, y_train, y_test = cross_validation.train_test_split( self.classifier.X,self.classifier.Y, test_size=0.3, random_state=0 )
+		X_train, X_test, y_train, y_test = cross_validation.train_test_split( self.X,self.Y, test_size=0.3, random_state=0 )
 
 		print( "SVC: " )
 		clf = SVC().fit(X_train, y_train)
