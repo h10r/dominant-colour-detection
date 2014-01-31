@@ -12,11 +12,9 @@ from sklearn import linear_model
 
 def load_classifier_from_disk():
     try:
-        return pickle.load(open("../data/classifier.bin", "rb"))
+        return pickle.load(open("../data/cached_classifier.bin", "rb"))
     except:
         return False
-
-clf = load_classifier_from_disk()
 
 def allowed_file(filename):
     return '.' in filename and \
