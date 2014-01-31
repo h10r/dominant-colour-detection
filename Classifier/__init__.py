@@ -13,17 +13,39 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.lda import LDA
 
 class Classifier():
+
+	USE_CACHED_VERSION = True
+
 	def __init__(self, data_source):
 		self.data_source = data_source
-
-		self.X = []
-		self.Y = []
-
+			
 		self.color_names = []
 
-		self.generate( self.data_source.db )
+		if self.USE_CACHED_VERSION:
+			classifier_from_cache = self.load_classifier_from_cache()
+			if classifier_from_cache:
+				self.clf, self.X, self.Y, self.color_names = classifier_from_cache
+		else: 
+			self.X = []
+			self.Y = []
+
+			self.generate( self.data_source.db )
 			
 		self.cross_validation()
+		self.save_classifier_to_cache()
+
+	def load_classifier_from_cache(self):
+		try:
+			return pickle.load(open("data/cached_classifier.bin", "rb"))
+		except:
+			return False
+	
+	def save_classifier_to_cache(self):
+		try:
+			archived_classifier = [self.clf, self.X, self.Y, self.color_names]
+			return pickle.dump( archived_classifier, open( "data/cached_classifier.bin", "wb" ) )
+		except:
+			return False
 		
 	def generate(self, dict_of_histograms):
 		color_class_id = 0
@@ -53,17 +75,31 @@ class Classifier():
 
 		X_train, X_test, y_train, y_test = cross_validation.train_test_split( self.X,self.Y, test_size=0.3, random_state=0 )
 
-		print( "SVC: " )
-		clf = SVC().fit(X_train, y_train)
-		print( clf.score(X_test, y_test) )
+		print("")
+		print( "X_train " )
+		print( X_train.shape )
+		print( "X_test" )
+		print( X_test.shape )
 
-		print( "LogisticRegression: " )
-		clf = LogisticRegression(C=1e5).fit(X_train, y_train)
-		print( clf.score(X_test, y_test) )
+		print( "y_train" )
+		print( y_train.shape )
+		print( "y_test" )
+		print( y_test.shape )
+		print("")
 
+		print( "LogisticRegression: 1e5" )
+		self.clf = LogisticRegression(C=1e5).fit(X_train, y_train)
+		print( self.clf.score(X_test, y_test) )
+
+		"""
 		print( "LDA: " )
 		clf = LDA().fit(X_train, y_train)
 		print( clf.score(X_test, y_test) )
+
+		print( "SVC: " )
+		clf = SVC().fit(X_train, y_train)
+		print( clf.score(X_test, y_test) )
+		"""
 
 		print("** cross_validation finished")
 

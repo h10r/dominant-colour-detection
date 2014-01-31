@@ -6,9 +6,9 @@ import mahotas as mh
 import numpy as np    
 
 class DataSource():
-	HIST_BANDS = 128
+	HIST_BANDS = 4096
 
-	USE_CACHED_VERSION = False
+	USE_CACHED_VERSION = True
 	
 	PATH_TO_SOURCE_FILES = "../photos/zalando/"
 
