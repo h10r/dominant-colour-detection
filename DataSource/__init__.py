@@ -6,7 +6,10 @@ import mahotas as mh
 import numpy as np    
 
 class DataSource():
-	HIST_BANDS = 4096
+	HIST_BANDS = 8
+
+	HIST_CLIPPING_MIN = 0.0
+	HIST_CLIPPING_MAX = 1.0
 
 	USE_CACHED_VERSION = True
 	
@@ -25,13 +28,20 @@ class DataSource():
 			self.save_db_to_cache()
 
 	def histogram_from_filename(self, filename):
-		#img = mh.imread( filename )
-		img = mh.imread( "/Users/hendrikheuer/Projects/dominant-colour-detection/photos/zalando/AD121D06S-502@5.1.jpg" )
+		img = np.reshape( mh.imread( filename ), (-1,3))
 
-		hist, bin_edges = np.histogram( img, bins = range(self.HIST_BANDS), normed=True)
-		hist = hist.clip(0.0,0.1)
+		r = img[:,0]
+		g = img[:,1]
+		b = img[:,2]
 
-		return hist
+		r_hist, r_bin_edges = np.histogram( r, bins = range(self.HIST_BANDS), density=True )
+		g_hist, g_bin_edges = np.histogram( g, bins = range(self.HIST_BANDS), density=True )
+		b_hist, b_bin_edges = np.histogram( b, bins = range(self.HIST_BANDS), density=True )
+
+		feature_vector = r_hist + g_hist + b_hist
+		feature_vector = feature_vector.clip( 0.0, 0.1 )
+
+		return feature_vector
 
 	def load_db_from_cache(self):
 		try:
@@ -59,10 +69,10 @@ class DataSource():
 		print("** generate_histograms_from_filename_and_categorize_by_color " + filename)
 		for color in colors.split(","):
 			if ( len(color) > 0 ):
-				histogram = self.histogram_from_filename( self.PATH_TO_SOURCE_FILES + filename )
+				histograms = self.histogram_from_filename( self.PATH_TO_SOURCE_FILES + filename )
 
 				if( color in self.db ):
-					self.db[color].append( histogram ) 
+					self.db[color].append( histograms ) 
 				else:
-					self.db[color] = [ histogram ]
+					self.db[color] = [ histograms ]
 

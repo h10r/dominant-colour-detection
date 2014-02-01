@@ -11,7 +11,7 @@ from operator import itemgetter
 
 from sklearn.linear_model import LogisticRegression
 
-HIST_BANDS = 4096
+HIST_BANDS = 64
 
 clf, _, _, color_names = pickle.load(open("data/cached_classifier.bin", "rb"))
 
@@ -21,13 +21,21 @@ CMD='screencapture -x -o ' + FILENAME
 def colorname_by_index( index ):
 	return color_names[ index ]
 
-def histogram_from_filename( filename ):
-	img = mh.imread( filename )
+def histogram_from_filename(filename):
+	img = np.reshape( mh.imread( filename ), (-1,3))
 
-	hist, bin_edges = np.histogram( img, bins = range(HIST_BANDS), normed=True)
-	hist = hist.clip(0.0,0.1)
+	r = img[:,0]
+	g = img[:,1]
+	b = img[:,2]
 
-	return hist
+	r_hist, r_bin_edges = np.histogram( r, bins = range(HIST_BANDS), density=True )
+	g_hist, g_bin_edges = np.histogram( g, bins = range(HIST_BANDS), density=True )
+	b_hist, b_bin_edges = np.histogram( b, bins = range(HIST_BANDS), density=True )
+
+	feature_vector = r_hist + g_hist + b_hist
+	feature_vector = feature_vector.clip( 0.0, 0.1 )
+
+	return feature_vector
 
 def predict_from_histogram( histogram ):
 	clf_predict = clf.predict_proba( histogram )

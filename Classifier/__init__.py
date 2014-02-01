@@ -12,9 +12,11 @@ from sklearn.svm import SVC
 from sklearn.linear_model import LogisticRegression
 from sklearn.lda import LDA
 
+from sklearn.neighbors import KNeighborsClassifier
+
 class Classifier():
 
-	USE_CACHED_VERSION = True
+	USE_CACHED_VERSION = False
 
 	def __init__(self, data_source):
 		self.data_source = data_source
@@ -56,7 +58,6 @@ class Classifier():
 			hists = dict_of_histograms[key]
 
 			for hist in hists:
-				
 				if not np.all( np.isfinite( hist ) ):
 					pass
 				else:
@@ -73,7 +74,7 @@ class Classifier():
 	def cross_validation(self):
 		print("** cross_validation start")
 
-		X_train, X_test, y_train, y_test = cross_validation.train_test_split( self.X,self.Y, test_size=0.3, random_state=0 )
+		X_train, X_test, y_train, y_test = cross_validation.train_test_split( self.X,self.Y, test_size=30, random_state=0 )
 
 		print("")
 		print( "X_train " )
@@ -87,6 +88,11 @@ class Classifier():
 		print( y_test.shape )
 		print("")
 
+		print( "KNeighborsClassifier(3)" )
+		self.clf = KNeighborsClassifier(3).fit( X_train, y_train )
+		print( self.clf.score(X_test, y_test) )
+
+		"""
 		print( "LogisticRegression: 1e5" )
 		self.clf = LogisticRegression(C=1e5).fit(X_train, y_train)
 		print( self.clf.score(X_test, y_test) )
@@ -98,6 +104,7 @@ class Classifier():
 		print( "SVC: " )
 		clf = SVC().fit(X_train, y_train)
 		print( clf.score(X_test, y_test) )
+		"""
 
 		print("** cross_validation finished")
 
