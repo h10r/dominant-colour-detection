@@ -25,7 +25,8 @@ class DataSource():
 			self.save_db_to_cache()
 
 	def histogram_from_filename(self, filename):
-		img = mh.imread( filename )
+		#img = mh.imread( filename )
+		img = mh.imread( "/Users/hendrikheuer/Projects/dominant-colour-detection/photos/zalando/AD121D06S-502@5.1.jpg" )
 
 		hist, bin_edges = np.histogram( img, bins = range(self.HIST_BANDS), normed=True)
 		hist = hist.clip(0.0,0.1)

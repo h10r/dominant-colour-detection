@@ -91,7 +91,6 @@ class Classifier():
 		self.clf = LogisticRegression(C=1e5).fit(X_train, y_train)
 		print( self.clf.score(X_test, y_test) )
 
-		"""
 		print( "LDA: " )
 		clf = LDA().fit(X_train, y_train)
 		print( clf.score(X_test, y_test) )
@@ -99,7 +98,6 @@ class Classifier():
 		print( "SVC: " )
 		clf = SVC().fit(X_train, y_train)
 		print( clf.score(X_test, y_test) )
-		"""
 
 		print("** cross_validation finished")
 

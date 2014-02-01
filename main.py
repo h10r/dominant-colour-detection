@@ -7,6 +7,8 @@ import pickle
 import numpy as np
 import mahotas as mh
 
+from operator import itemgetter
+
 from sklearn.linear_model import LogisticRegression
 
 HIST_BANDS = 4096
@@ -28,10 +30,24 @@ def histogram_from_filename( filename ):
 	return hist
 
 def predict_from_histogram( histogram ):
-	return clf.predict_proba( histogram )
-	
+	clf_predict = clf.predict_proba( histogram )
+
+	unsorted_predictions = []
+
+	for p in clf_predict:
+		for i in range(len(p)):
+			if p[i] > 0.0:
+				unsorted_predictions.append( [color_names[i], p[i] ] )
+
+	sorted_predictions = sorted( unsorted_predictions, key=itemgetter(1), reverse=True)
+
+	for res in sorted_predictions: #[:3]:
+		color, percentage = res
+		print( color + "\t" + str(int(100*percentage)).zfill(2) + "%" )
+	print()
+
 def predict_from_filename( filename ):
-	return predict_from_histogram( histogram_from_filename( filename ) )
+	predict_from_histogram( histogram_from_filename( filename ) )
 
 if __name__ == "__main__":
 
@@ -41,8 +57,6 @@ if __name__ == "__main__":
 	
 	time.sleep( 0.2 ) # average execution time: 0.141
 	
-	print( predict_from_filename(FILENAME) )
+	predict_from_filename(FILENAME)
 
-	time.sleep( 1 )
-
-
+	#time.sleep( 1 )
